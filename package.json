@@ -1,0 +1,25 @@
+{
+  "name": "rater-js",
+  "description": "Star rating widget for the browser.",
+  "version": "0.0.1",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/fredolss/rater-js.git"
+  },
+  "homepage": "https://github.com/fredolss/rater-js",
+  "main": "index.js",
+  "keywords": [
+    "star",
+    "rating",
+    "rater",
+    "widget",
+    "browser",
+    "browserify"
+  ],
+  "author": {
+    "name": "Fredrik Olsson",
+    "email": "fredrik.olsson2@outlook.com",
+    "url": "https://github.com/fredolss"
+  },
+  "license": "MIT"
+}
