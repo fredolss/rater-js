@@ -1,6 +1,4 @@
-# rater
-
-Star rating widget for the browser.
+**rater-js** is a star rating widget for the browser. It is written in **vanilla.js** so has no dependencies.
 
 ## Install
 
@@ -10,8 +8,7 @@ npm install rater-js --save
 
 ## Usage
 
-rater-js can be used with amd, commonjs or without any module loader using rater from global scope.
-
+**rater-js** can be used with amd, commonjs or without any module loader using global scope.
 
 In your html create a new element that acts as the placeholder for the widget.
 
@@ -26,7 +23,7 @@ In your html create a new element that acts as the placeholder for the widget.
 
 ```
 
-### Node/Browserfiy
+### Node/Browserify
 
 ```js
 
