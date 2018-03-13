@@ -134,7 +134,14 @@
 		elem.addEventListener("mouseout", onStarOut);
 		elem.addEventListener("click", onStarClick);
 
-		return { setAvgRating: setAvgRating, getAvgRating,getMyRating:getMyRating, disable:disable, enable:enable };
+		return { 
+			setAvgRating: setAvgRating,
+			getAvgRating: getAvgRating,
+			getMyRating:getMyRating,
+			setMyRating:setMyRating,
+			disable:disable, 
+			enable:enable 
+		};
 	}
 
 }));
