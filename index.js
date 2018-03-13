@@ -93,7 +93,7 @@
 			elem.setAttribute("data-title", undefined);
 		}
 
-		function setRating(value) {
+		function setAvgRating(value) {
 			rating = value;
 
 			if(typeof value !== "undefined"){
@@ -105,8 +105,18 @@
 			elem.setAttribute("data-rating", value);
 		}
 
-		function getRating() {
+		function getAvgRating() {
 			return rating;
+		}
+
+		function getMyRating(){
+			return my_rating;
+		}
+
+		function setMyRating(rating){
+			my_rating = rating;
+			elem.setAttribute("data-title", ratingText.replace("{rating}",my_rating));
+			elem.querySelector(".star-value").style.width = my_rating/stars * 100 + "%";
 		}
 
 		function dispose(){
@@ -119,12 +129,12 @@
 			elem.removeEventListener("click", onStarClick);
 		}
 
-		setRating(options.rating);
+		setAvgRating(options.rating);
 		elem.addEventListener("mousemove",onMouseMove);
 		elem.addEventListener("mouseout", onStarOut);
 		elem.addEventListener("click", onStarClick);
 
-		return { setRating: setRating, getRating, disable:disable, enable:enable };
+		return { setAvgRating: setAvgRating, getAvgRating,getMyRating:getMyRating, disable:disable, enable:enable };
 	}
 
 }));
