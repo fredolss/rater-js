@@ -105,6 +105,10 @@
 			elem.setAttribute("data-rating", value);
 		}
 
+		function getRating() {
+			return rating;
+		}
+
 		function dispose(){
 			if(!elem){
 				return;
@@ -120,7 +124,7 @@
 		elem.addEventListener("mouseout", onStarOut);
 		elem.addEventListener("click", onStarClick);
 
-		return { setRating: setRating, disable:disable, enable:enable };
+		return { setRating: setRating, getRating, disable:disable, enable:enable };
 	}
 
 }));

@@ -79,4 +79,5 @@ See <a href="example/index.html">Example</a> for more information.
 disable: Disable the widget
 enable: Enable the widget
 setRating(rating:number): Set the rating
+getRating(): Get the rating
 ```
