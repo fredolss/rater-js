@@ -39,7 +39,7 @@
         var disableText;
 
 		if(!options.readOnly){
-			disableText =  options.disableText || "Thank you for your're vote!";
+			disableText =  options.disableText || "Thank you for your vote!";
 		}
 		
 		var ratingText = options.ratingText  || "Set a rating of {rating}" ;
