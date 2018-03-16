@@ -140,7 +140,8 @@
 			getMyRating:getMyRating,
 			setMyRating:setMyRating,
 			disable:disable, 
-			enable:enable 
+			enable:enable,
+			dispose:dispose 
 		};
 	}
 
