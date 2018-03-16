@@ -6,7 +6,7 @@
     "type": "git",
     "url": "git://github.com/fredolss/rater-js.git"
   },
-  "homepage": "https://github.com/fredolss/rater-js",
+  "homepage": "https://fredolss.github.io/rater-js",
   "main": "index.js",
   "keywords": [
     "star",
