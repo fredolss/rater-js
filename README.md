@@ -81,5 +81,5 @@ enable: Enable the widget
 setAvgRating(rating:number): Set the average rating
 getAvgRating(): Get the rating
 getMyRating(): Get the rating the user submitted
-setMyRating(rating:number): Get the rating the user submitted
+setMyRating(rating:number): Set the rating the user submitted
 ```
