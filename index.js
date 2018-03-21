@@ -13,11 +13,7 @@
        if (typeof options.element === "undefined") {
 		   throw new Error("element required"); 
 	   }
-
-	   if (typeof options.rateCallback === "undefined") {
-		   throw new Error("rateCallback required"); 
-	   }
-
+	   
 		//private fields
 		var stars = options.max || 10; 
 		var starWidth = 18; 
@@ -78,7 +74,10 @@
 				return; 
 			}
 
-			callback.call(this, my_rating); 
+			if(typeof callback !== "undefined" ){
+				callback.call(this, my_rating);
+			}
+
 			block = true; 
 		}
 

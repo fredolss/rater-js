@@ -1,6 +1,6 @@
 interface RaterOptions {
     element:HTMLElement;
-    rateCallback:(callback:(rating:number) => void) => any; 
+    rateCallback?:(callback:(rating:number) => void) => any; 
     max?:number; 
     rating?:number; 
     disableText?:string; 
@@ -18,7 +18,7 @@ interface Rater {
 }
 
 declare module "rater" {
-    export = raterFunction;
+    export default raterFunction;
 }
 
 declare function raterFunction (options:RaterOptions): Rater;
