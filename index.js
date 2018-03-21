@@ -90,6 +90,10 @@
 				
 				callback.call(this, my_rating, function() {
 					isRating = false;
+
+					if(disabled === false){
+						elem.removeAttribute("data-title"); 
+					}
 				});
 			}
 
