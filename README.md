@@ -55,7 +55,7 @@ Lastly we can use the widget like this:
                 //in this example we have a 'service' that rate and returns the average rating
                 myDataService.rate(rate).then(function(avgRating) {
                     //update the avarage rating with the one we get from the server
-                    myRater.setAvgRating(ratavgRatinging);
+                    myRater.setAvgRating(avgRating);
                      //we could disable the rater to prevent another rating
                      //if we dont want the user to be able to change their mind
                     myRater.disable();
