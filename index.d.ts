@@ -17,8 +17,8 @@ interface Rater {
     setMyRating:(rating) => void;
 }
 
-declare module "rater" {
+declare module "rater-js" {
     export default raterFunction;
 }
 
-declare function raterFunction (options:RaterOptions): Rater;
+declare function raterFunction(options:RaterOptions): Rater;
