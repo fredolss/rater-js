@@ -59,11 +59,13 @@ Lastly we can use the widget like this:
                      //we could disable the rater to prevent another rating
                      //if we dont want the user to be able to change their mind
                     myRater.disable();
+                    //dont forget to call done
                     done();
                 }, function(error) {
                         //handle the error
                         //maybe we can enable and let the user rate again
                         myRater.enable();
+                        //dont forget to call done
                         done();
                 });
 	}});
