@@ -1,4 +1,10 @@
+Rater Js
+========
+
 ![rater-js Logo](ratings.png)
+[![NPM version][npm-image]][npm-url]
+[![License][license-image]][license-url]
+[![Downloads][downloads-image]][downloads-url]
 
 **rater-js** is a star rating widget for the browser.
 
@@ -7,7 +13,9 @@ Main features:
 * Unlimited number of stars.
 * Custom css. Use your own image as star.
 
-## Install
+[**Try Rater JS  Demo →**][RaterJS]
+
+## Installation
 
 ```
 npm install rater-js --save
@@ -16,7 +24,6 @@ npm install rater-js --save
 ## Usage
 
 **rater-js** can be used with amd, commonjs or without any module loader using global scope.
-
 
 In your html create an element that acts as the placeholder for the widget.
 
@@ -57,8 +64,6 @@ Alternativly reference the provided css from the node modules. You can use  your
 <link href="node-modules/rater-js/rater-js.css" rel="stylesheet"> 
 ```
 
-See <a href="example/index.html">Example</a> for more information.
-
 ## Configuration
 
 ```js
@@ -83,3 +88,11 @@ getAvgRating(): Get the rating
 getMyRating(): Get the rating the user submitted
 setMyRating(rating:number): Set the rating the user submitted
 ```
+
+
+[RaterJs]:https://fredolss.github.io/rater-js/example/  "RaterJs"
+[npm-image]: https://img.shields.io/npm/v/rater-js.svg?style=flat-square
+[npm-url]: https://npmjs.org/package/rater-js
+[license-url]: LICENSE.md
+[downloads-image]: http://img.shields.io/npm/dm/rater-js.svg?style=flat-square
+[downloads-url]: https://npmjs.org/package/rater-js
