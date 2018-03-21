@@ -34,6 +34,7 @@
 		var block = false; 
 		var disableText;
 		var isRating = false;
+		var isBusyText = options.isBusyText;
 
 		if (!options.readOnly) {
 			disableText = options.disableText || "Thank you for your vote!"; 
@@ -81,6 +82,12 @@
 
 			if(typeof callback !== "undefined" ){
 				isRating = true;
+				if(typeof isBusyText === "undefined"){
+					elem.removeAttribute("data-title"); 
+				} else {
+					elem.removeAttribute("data-title", isBusyText); 
+				}
+				
 				callback.call(this, my_rating, function() {
 					isRating = false;
 				});
