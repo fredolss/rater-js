@@ -85,7 +85,7 @@
 				if(typeof isBusyText === "undefined"){
 					elem.removeAttribute("data-title"); 
 				} else {
-					elem.removeAttribute("data-title", isBusyText); 
+					elem.setAttribute("data-title", isBusyText); 
 				}
 				
 				callback.call(this, my_rating, function() {
