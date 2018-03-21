@@ -82,11 +82,12 @@ Alternativly reference the provided css from the node modules. You can use  your
 
 ```js
 {
-        element: HtmlElement,
+        element: HtmlElement, //required
         rateCallback: Function,
         max: "Number of stars",
         disableText: "Text",
         ratingText: "Text {rating}",
+        isBusyText: "Rating in progress. Please wait...",
         readOnly: true/false
 }
 
