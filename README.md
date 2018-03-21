@@ -50,11 +50,22 @@ var rater = require("rater-js");
 
 Lastly we can use the widget like this:
 ```js
- var myRater = rater({element: document.querySelector("#rater"), rateCallback: function rateCallback(rating) {
-                //make async call to server
-                myRater.setRating(rating);
-                //we could disable the rater to prevent another rating
-                myRater.disable();
+ var myRater = rater({element: document.querySelector("#rater"), rateCallback: function rateCallback(rating, done) {
+                //make async call to server however you want
+                //in this example we have a 'service' that rate and returns the average rating
+                myDataService.rate(rate).then(function(avgRating) {
+                    //update the avarage rating with the one we get from the server
+                    myRater.setAvgRating(ratavgRatinging);
+                     //we could disable the rater to prevent another rating
+                     //if we dont want the user to be able to change their mind
+                    myRater.disable();
+                    done();
+                }, function(error) {
+                        //handle the error
+                        //maybe we can enable and let the user rate again
+                        myRater.enable();
+                        done();
+                });
 	}});
 ```
 
@@ -85,7 +96,7 @@ Alternativly reference the provided css from the node modules. You can use  your
 disable: Disable the widget
 enable: Enable the widget
 setAvgRating(rating:number): Set the average rating
-getAvgRating(): Get the rating
+getAvgRating(): Get the average rating
 getMyRating(): Get the rating the user submitted
 setMyRating(rating:number): Set the rating the user submitted
 ```

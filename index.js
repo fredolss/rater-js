@@ -15,7 +15,7 @@
 	   }
 	   
 		//private fields
-		var stars = options.max || 10; 
+		var stars = options.max || 5; 
 		var starWidth = 18; 
 
 		var rating; 
@@ -32,7 +32,8 @@
 		var callback = options.rateCallback; 
 		var disabled =  !!options.readOnly; 
 		var block = false; 
-        var disableText; 
+		var disableText;
+		var isRating = false;
 
 		if (!options.readOnly) {
 			disableText = options.disableText || "Thank you for your vote!"; 
@@ -43,7 +44,7 @@
 		//private methods
 		function onMouseMove(e) {
 
-			if (disabled === true || block === true) {
+			if (disabled === true || block === true || isRating) {
 				return; 
 			}
 			
@@ -74,8 +75,15 @@
 				return; 
 			}
 
+			if(isRating){
+				return;
+			}
+
 			if(typeof callback !== "undefined" ){
-				callback.call(this, my_rating);
+				isRating = true;
+				callback.call(this, my_rating, function() {
+					isRating = false;
+				});
 			}
 
 			block = true; 

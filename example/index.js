@@ -1,8 +1,8 @@
 function onload(event){
    
-   var starRating = rater({element:document.querySelector("#rater"), rateCallback: function rateCallback(rating) {
- 	starRating.setAvgRating(rating);
-        starRating.disable();
+   var starRating = rater({element:document.querySelector("#rater"), rateCallback: function rateCallback(rating,done) {
+	 starRating.setAvgRating(rating);
+		done();
 	}});
 
     var starRating2 = rater(
@@ -12,9 +12,10 @@ function onload(event){
 		element: document.querySelector("#rater2"),
 		disableText:"Custom disable text!",
 		ratingText:"My custom rating text {rating}", 
-		rateCallback: function rateCallback(rating) {
+		rateCallback: function rateCallback(rating, done) {
 			starRating2.setAvgRating(rating);
 			starRating2.disable();
+			done();
 		}
 	});
 
@@ -24,9 +25,10 @@ function onload(event){
 		readOnly:true,
 		rating:4, 
 		element: document.querySelector("#rater3"),
-		rateCallback: function rateCallback(rating) {
+		rateCallback: function rateCallback(rating, done) {
 			starRating3.setAvgRating(rating);
 			starRating3.disable();
+			done();
 		}
 	});
 }
