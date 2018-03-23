@@ -9,6 +9,9 @@
   "homepage": "https://fredolss.github.io/rater-js",
   "types": "index.d.ts",
   "main": "index.js",
+  "scripts": {
+    "build": "browserify -t [ browserify-css --inlineImages ] ./lib/rater-js -o index.js --standalone rater-js"
+  },
   "keywords": [
     "star",
     "rating",
@@ -23,5 +26,9 @@
     "email": "fredrik.olsson2@outlook.com",
     "url": "https://github.com/fredolss"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "browserify-css": "^0.14.0",
+    "browserify":"^16.1.1"
+  }
 }

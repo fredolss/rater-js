@@ -40,7 +40,7 @@ Directly reference the js from the module
 <script src="node-modules/rater-js/index.js"></script>
 ```
 
-The widget will be available globally as "rater" on the window object.
+The widget will be available globally as "raterJs" on the window object.
 
 ### Node/Browserify
 Just require the module.
@@ -63,19 +63,24 @@ Lastly we can use the widget like this:
                     done();
                 }, function(error) {
                         //handle the error
-                        //maybe we can enable and let the user rate again
-                        myRater.enable();
                         //dont forget to call done
                         done();
                 });
 	}});
 ```
 
-Alternativly reference the provided css from the node modules. You can use  your own css too of course.
+Css will be injected at runtime, but you can override the css to get the look you want.
 
-```html
-<!--Add the styling to the head-->
-<link href="node-modules/rater-js/rater-js.css" rel="stylesheet"> 
+```css
+//make the stars red
+.star-rating .star-value {
+        background-color: red !important;
+}
+
+//change the whole image used as the star
+.star-rating .star-bg{
+        background: url("myStar.svg") !important;
+}
 ```
 
 ## Configuration
@@ -87,7 +92,7 @@ Alternativly reference the provided css from the node modules. You can use  your
         max: "Number of stars",
         disableText: "Text",
         ratingText: "Text {rating}",
-        isBusyText: "Rating in progress. Please wait...",
+        isBusyText: "Text", //displayed while user is rating but done not called yet
         readOnly: true/false
 }
 
@@ -95,13 +100,13 @@ Alternativly reference the provided css from the node modules. You can use  your
 
 ## Methods
 
-```
-disable: Disable the widget
-enable: Enable the widget
-setAvgRating(rating:number): Set the average rating
-getAvgRating(): Get the average rating
-getMyRating(): Get the rating the user submitted
-setMyRating(rating:number): Set the rating the user submitted
+```js
+disable(): //Disable the widget
+enable(): //Enable the widget
+setAvgRating(rating:number): //Set the average rating
+getAvgRating(): //Get the average rating
+getMyRating(): //Get the rating the user submitted
+setMyRating(rating:number): //Set the rating the user submitted
 ```
 
 
