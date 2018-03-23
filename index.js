@@ -9,7 +9,7 @@ module.exports = function rater(options) {
 	
 	//private fields
 	var stars = options.max || 5; 
-	var starWidth = 18; 
+	var starWidth = options.starWidth || 18; 
 
 	var rating; 
 	var my_rating; 
