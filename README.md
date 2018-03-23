@@ -77,7 +77,7 @@ Css will be injected at runtime, but you can override the css to get the look yo
         background-color: red !important;
 }
 
-//change the whole image used as the star
+//change the whole image used as the star. Make sure to set starWidth in options if not 18px.
 .star-rating .star-bg{
         background: url("myStar.svg") !important;
 }
@@ -90,6 +90,7 @@ Css will be injected at runtime, but you can override the css to get the look yo
         element: HtmlElement, //required
         rateCallback: Function,
         max: "Number of stars",
+        starWidth: "Width of the star image in pixels",
         disableText: "Text",
         ratingText: "Text {rating}",
         isBusyText: "Text", //displayed while user is rating but done not called yet
