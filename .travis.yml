@@ -1,1 +1,4 @@
-{   "language": "node",   "os": "linux",   "group": "stable",   "dist": "trusty" }
+language: node_js
+
+node_js:
+  - 8
