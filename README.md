@@ -6,6 +6,7 @@ Rater Js
 [![NPM version][npm-image]][npm-url]
 [![License][license-image]][license-url]
 [![Downloads][downloads-image]][downloads-url]
+[![Build Status](https://travis-ci.org/fredolss/rater-js.svg?branch=master)](https://travis-ci.org/fredolss/rater-js)
 
 **rater-js** is a star rating widget for the browser.
 
