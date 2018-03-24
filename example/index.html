@@ -1,20 +1,90 @@
 <html>
 <head>
-<title>Example</title>
+<title>RaterJs Example</title>
 <body>
+ 
+<h1>RaterJs Example</h1>  
+<h2>Basic 5 star rater</h2>
 
-5 Star rater with custom isBusyText and simulated backend. A random number betweeen 1 and 5 is set as the rating.
 <div id="rater"></div>
 
+<pre>
+    <code>
+    {
+        element:document.querySelector("#rater"),
+        rateCallback:function rateCallback(rating, done) {
+            this.setAvgRating(rating); 
+            done(); 
+        }
+    }
+</code>
+</pre>
+
 <hr>
 
-Custom messages
+<h2>Custom messages</h2>
+
 <div id="rater2"></div>
 
+<pre>
+    <code>
+    {
+        max:5, 
+        rating:4, 
+        element:document.querySelector("#rater2"), 
+        disableText:"Custom disable text!", 
+        ratingText:"My custom rating text {rating}", 
+        rateCallback:function rateCallback(rating, done) {
+            starRating2.setAvgRating(rating); 
+            starRating2.disable(); 
+            done(); 
+        }
+    }
+</code>
+</pre>
+
+
 <hr>
 
-You can have unlimited number of stars. Example with 16 stars. readOnly option is set to true.
+<h2>You can have unlimited number of stars. Example with 16 stars. readOnly option is set to true.</h2>
+
 <div id="rater3"></div>
+
+<pre>
+    <code>
+    {
+        max:16, 
+        readOnly:true, 
+        rating:4, 
+        element:document.querySelector("#rater3")
+    }
+</code>
+</pre>
+
+
+<hr>
+
+<h2>5 Star rater with custom isBusyText and simulated backend. A random number betweeen 1 and 5 is set as the rating.</h2>
+
+<div id="rater4"></div>
+
+<pre>
+    <code>
+    { 
+        isBusyText: "Rating in progress. Please wait...",
+        element:document.querySelector("#rater4"),
+        rateCallback: function rateCallback(rating, done) {
+        starRating.setAvgRating(rating); 
+            myDataService.rate().then(function (avgRating) {
+                starRating.setAvgRating(avgRating); 
+                done(); 
+            });
+        }    
+    }
+    </code>
+</pre>
+
+<hr>
 
 <script src="../index.js"></script>
 <script src="index.js"></script>
