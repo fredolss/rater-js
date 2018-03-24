@@ -20,9 +20,9 @@ function onload(event) {
 	}); 
 
    var starRating4 = raterJs( { isBusyText: "Rating in progress. Please wait...", element:document.querySelector("#rater4"), rateCallback:function rateCallback(rating, done) {
-	 starRating.setAvgRating(rating); 
+		starRating4.setAvgRating(rating); 
 	 	myDataService.rate().then(function (avgRating) {
-			 starRating.setAvgRating(avgRating); 
+			starRating4.setAvgRating(avgRating); 
 			 done(); 
 		 }); 
 	}}); 
