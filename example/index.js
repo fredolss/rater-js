@@ -4,7 +4,7 @@ function onload(event) {
 		 rate:function(rating) {
 				return {then:function (callback) {
 					setTimeout(function () {
-						callback(Math.floor((Math.random() * 5) + 1)); 
+						callback((Math.random() * 5)); 
 					}, 1000); 
 				}
 			}
@@ -43,7 +43,7 @@ function onload(event) {
 	var starRating3 = raterJs( {
 		max:16, 
 		readOnly:true, 
-		rating:4, 
+		rating:4.4, 
 		element:document.querySelector("#rater3")
 	}); 
 }
