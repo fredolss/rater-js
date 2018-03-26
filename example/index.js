@@ -14,15 +14,15 @@ function onload(event) {
 	var starRating1 = raterJs( {
 		element:document.querySelector("#rater"),
 		rateCallback:function rateCallback(rating, done) {
-			this.setAvgRating(rating); 
+			this.setRating(rating); 
 			done(); 
 		}
 	}); 
 
    var starRating4 = raterJs( { isBusyText: "Rating in progress. Please wait...", element:document.querySelector("#rater4"), rateCallback:function rateCallback(rating, done) {
-		starRating4.setAvgRating(rating); 
+		starRating4.setRating(rating); 
 	 	myDataService.rate().then(function (avgRating) {
-			starRating4.setAvgRating(avgRating); 
+			starRating4.setRating(avgRating); 
 			 done(); 
 		 }); 
 	}}); 
@@ -33,8 +33,9 @@ function onload(event) {
 		element:document.querySelector("#rater2"), 
 		disableText:"Custom disable text!", 
 		ratingText:"My custom rating text {rating}", 
+		showToolTip:true,
 		rateCallback:function rateCallback(rating, done) {
-			starRating2.setAvgRating(rating); 
+			starRating2.setRating(rating); 
 			starRating2.disable(); 
 			done(); 
 		}
@@ -46,6 +47,21 @@ function onload(event) {
 		rating:4.4, 
 		element:document.querySelector("#rater3")
 	}); 
+
+	var starRating5 = raterJs( {
+		element:document.querySelector("#rater5"),
+		rateCallback:function rateCallback(rating, done) {
+			this.setRating(rating); 
+			done(); 
+		},
+		onHover: function(currentIndex, currentRating){
+			document.querySelector('.live-rating').textContent = currentIndex;
+		},
+		onLeave: function(currentIndex, currentRating){
+			document.querySelector('.live-rating').textContent = currentRating;
+		}
+	}); 
+
 }
 
 window.addEventListener("load", onload, false); 

@@ -3,6 +3,7 @@
     height: 16px;
     position: relative;
     background-color: #ccc;
+    display:inline-block;
 }
 
 .star-rating[data-title]:hover:after {

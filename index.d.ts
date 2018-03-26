@@ -4,17 +4,16 @@ interface RaterOptions {
     max?:number; 
     rating?:number; 
     disableText?:string; 
-    ratingText?:string; 
+    ratingText?:string;
+    showToolTip?:boolean;
 }
 
 interface Rater {
     disable:() => void; 
     enable:() => void;
     dispose: ()=> void;
-    setAvgRating:(ratig) => void; 
-    getAvgRating:() => number; 
-    getMyRating:() => number; 
-    setMyRating:(rating) => void;
+    setRating:(ratig) => void; 
+    getRating:() => number; 
 }
 
 declare module "rater-js" {

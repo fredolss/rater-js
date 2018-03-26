@@ -13,7 +13,7 @@
     {
         element:document.querySelector("#rater"),
         rateCallback:function rateCallback(rating, done) {
-            this.setAvgRating(rating); 
+            this.setRating(rating); 
             done(); 
         }
     }
@@ -33,10 +33,11 @@
         rating:4, 
         element:document.querySelector("#rater2"), 
         disableText:"Custom disable text!", 
-        ratingText:"My custom rating text {rating}", 
+        ratingText:"My custom rating text {rating}",
+        showToolTip:true,
         rateCallback:function rateCallback(rating, done) {
-            starRating2.setAvgRating(rating); 
-            starRating2.disable(); 
+            starRating.setRating(rating); 
+            starRating.disable(); 
             done(); 
         }
     }
@@ -61,7 +62,6 @@
 </code>
 </pre>
 
-
 <hr>
 
 <h2>5 Star rater with custom isBusyText and simulated backend. A random number betweeen 1 and 5 is set as the rating.</h2>
@@ -74,14 +74,41 @@
         isBusyText: "Rating in progress. Please wait...",
         element:document.querySelector("#rater4"),
         rateCallback: function rateCallback(rating, done) {
-        starRating.setAvgRating(rating); 
+        starRating.setRating(rating); 
             myDataService.rate().then(function (avgRating) {
-                starRating.setAvgRating(avgRating); 
+                starRating.setRating(avgRating); 
                 done(); 
             });
         }    
     }
     </code>
+</pre>
+
+<hr>
+
+<h2>On hover event</h2>
+
+<div>
+    <span id="rater5"></span>
+    <span class="live-rating"></span>
+</div>
+
+<pre>
+    <code>
+    {
+        element:document.querySelector("#rater5"),
+        rateCallback:function rateCallback(rating, done) {
+            this.setRating(rating); 
+            done(); 
+        },
+        onHover: function(currentIndex, currentRating){
+			document.querySelector('.live-rating').textContent = currentIndex;
+        },
+        onLeave: function(currentIndex, currentRating){
+            document.querySelector('.live-rating').textContent = currentRating;
+        }
+    }
+</code>
 </pre>
 
 <hr>
