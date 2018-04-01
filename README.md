@@ -56,7 +56,7 @@ Lastly we can use the widget like this:
                 //in this example we have a 'service' that rate and returns the average rating
                 myDataService.rate(rate).then(function(avgRating) {
                     //update the avarage rating with the one we get from the server
-                    myRater.setAvgRating(avgRating);
+                    myRater.setRating(avgRating);
                      //we could disable the rater to prevent another rating
                      //if we dont want the user to be able to change their mind
                     myRater.disable();
@@ -73,14 +73,16 @@ Lastly we can use the widget like this:
 Css will be injected at runtime, but you can override the css to get the look you want.
 
 ```css
-//make the stars red
-.star-rating .star-value {
-        background-color: red !important;
+
+//change the whole image used as the star. Make sure to set starSize in options if not 16px.
+//first image is for the 'off' mode
+.star-rating {
+        background: url("myStar_off.svg") !important;
 }
 
-//change the whole image used as the star. Make sure to set starWidth in options if not 18px.
-.star-rating .star-bg{
-        background: url("myStar.svg") !important;
+//add style for 'on' mode
+.star-rating .star-value{
+        background: url("myStar_on.svg") !important;
 }
 ```
 
@@ -91,9 +93,9 @@ Css will be injected at runtime, but you can override the css to get the look yo
         element: HtmlElement, //required
         rateCallback: Function,
         max: "Number of stars",
-        starWidth: "Width of the star image in pixels",
+        starSize: "Width and height of the star image in pixels",
         disableText: "Text",
-        ratingText: "Text {rating}",
+        ratingText: "Text {rating} {maxRating}",
         isBusyText: "Text", //displayed while user is rating but done not called yet
         readOnly: true/false
 }
@@ -105,10 +107,8 @@ Css will be injected at runtime, but you can override the css to get the look yo
 ```js
 disable(): //Disable the widget
 enable(): //Enable the widget
-setAvgRating(rating:number): //Set the average rating
-getAvgRating(): //Get the average rating
-getMyRating(): //Get the rating the user submitted
-setMyRating(rating:number): //Set the rating the user submitted
+setRating(rating:number): //Set the rating
+getRating(): //Get the average rating
 ```
 
 

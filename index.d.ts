@@ -6,6 +6,7 @@ interface RaterOptions {
     disableText?:string; 
     ratingText?:string;
     showToolTip?:boolean;
+    starSize?:number;
 }
 
 interface Rater {

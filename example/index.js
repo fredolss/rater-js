@@ -12,6 +12,7 @@ function onload(event) {
 	}
 
 	var starRating1 = raterJs( {
+		starSize:32,
 		element:document.querySelector("#rater"),
 		rateCallback:function rateCallback(rating, done) {
 			this.setRating(rating); 
@@ -19,12 +20,14 @@ function onload(event) {
 		}
 	}); 
 
-   var starRating4 = raterJs( { isBusyText: "Rating in progress. Please wait...", element:document.querySelector("#rater4"), rateCallback:function rateCallback(rating, done) {
-		starRating4.setRating(rating); 
-	 	myDataService.rate().then(function (avgRating) {
-			starRating4.setRating(avgRating); 
-			 done(); 
-		 }); 
+   var starRating4 = raterJs( { isBusyText: "Rating in progress. Please wait...",
+		element:document.querySelector("#rater4"),
+		rateCallback:function rateCallback(rating, done) {
+			starRating4.setRating(rating); 
+			myDataService.rate().then(function (avgRating) {
+				starRating4.setRating(avgRating); 
+				done(); 
+		}); 
 	}}); 
 
     var starRating2 = raterJs( {

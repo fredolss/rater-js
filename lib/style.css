@@ -1,9 +1,10 @@
 .star-rating {
     width: 0;
-    height: 16px;
     position: relative;
-    background-color: #ccc;
     display:inline-block;
+    background-image: url(star_0.svg);
+    background-position: 0 0;
+    background-repeat: repeat-x;
 }
 
 .star-rating[data-title]:hover:after {
@@ -32,13 +33,12 @@
 .star-rating .star-value {
     height: 100%;
     position: absolute;
-    background-color: #ffbe10;
 }
 
-.star-rating .star-bg {
+.star-rating .star-value {
     position: absolute;
     height: 100%;
     width: 100%;
-    background: url('./star.svg') repeat;
-    background-size: contain;
+    background: url('./star_1.svg') ;
+    background-repeat: repeat-x;
 }

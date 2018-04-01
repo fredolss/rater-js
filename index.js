@@ -4,18 +4,18 @@ var css = require('./style.css');
 module.exports = function rater(options) {
 
 	//private fields
-	var showToolTip = false; 
+	var showToolTip = true; 
 
 	if (typeof options.element === "undefined" || options.element === null) {
 		throw new Error("element required"); 
 	}
 
 	if (typeof options.showToolTip !== "undefined") {
-		showToolTip = !!options.showToolTip;
-	}
+		showToolTip =  !!options.showToolTip; 
+	} 
 
 	var stars = options.max || 5; 
-	var starWidth = options.starWidth || 18; 
+	var starSize = options.starSize || 16; 
 	var onHover = options.onHover; 
 	var onLeave = options.onLeave; 
 	var rating; 
@@ -24,11 +24,11 @@ module.exports = function rater(options) {
 	elem.classList.add("star-rating"); 
 	var div = document.createElement("div"); 
 	div.classList.add("star-value"); 
+	div.style.backgroundSize = starSize + "px"; 
 	elem.appendChild(div); 
-	div = document.createElement("div"); 
-	div.classList.add("star-bg"); 
-	elem.appendChild(div); 
-	elem.style.width = starWidth * stars + "px"; 
+	elem.style.width = starSize * stars + "px"; 
+	elem.style.height = starSize + "px"; 
+	elem.style.backgroundSize = starSize + "px"; 
 	var callback = options.rateCallback; 
 	var disabled =  !  ! options.readOnly; 
 	var block = false; 
@@ -37,15 +37,22 @@ module.exports = function rater(options) {
 	var isBusyText = options.isBusyText; 
 	var currentRating; 
 
-	if ( ! options.readOnly) {
+	if (!options.readOnly) {
 		disableText = options.disableText || "Thank you for your vote!"; 
 	}
 	
-	var ratingText = options.ratingText || "Set a rating of {rating}"; 
-	
+	var ratingText = options.ratingText || "{rating}/{maxRating}"; 
 
 	//private methods
 	function onMouseMove(e) {
+
+		if(disabled){
+			if (showToolTip) {
+				let toolTip = ratingText.replace("{rating}", rating); 
+				toolTip = toolTip.replace("{maxRating}", stars); 
+				elem.setAttribute("data-title", toolTip); 
+			}
+		}
 
 		if (disabled === true || block === true || isRating === true) {
 			return; 
@@ -57,8 +64,10 @@ module.exports = function rater(options) {
 
 		if (percent < 101) {
 			currentRating = Math.ceil((percent / 100) * stars); 
-			if(showToolTip){
-				elem.setAttribute("data-title", ratingText.replace("{rating}", currentRating)); 
+			if (showToolTip) {
+				let toolTip = ratingText.replace("{rating}", currentRating); 
+				toolTip = toolTip.replace("{maxRating}", stars); 
+				elem.setAttribute("data-title", toolTip); 
 			}
 		
 			elem.querySelector(".star-value").style.width = currentRating/stars * 100 + "%"; 
@@ -165,7 +174,7 @@ module.exports = function rater(options) {
 	return module; 
 }
 },{"./style.css":2}],2:[function(require,module,exports){
-var css = ".star-rating {\n  width: 0;\n  height: 16px;\n  position: relative;\n  background-color: #ccc;\n  display: inline-block;\n}\n.star-rating[data-title]:hover:after {\n  content: attr(data-title);\n  padding: 4px 8px;\n  color: #333;\n  position: absolute;\n  left: 0;\n  top: 100%;\n  z-index: 20;\n  white-space: nowrap;\n  -moz-border-radius: 5px;\n  -webkit-border-radius: 5px;\n  border-radius: 5px;\n  -moz-box-shadow: 0px 0px 4px #222;\n  -webkit-box-shadow: 0px 0px 4px #222;\n  box-shadow: 0px 0px 4px #222;\n  background-image: -moz-linear-gradient(top, #eeeeee, #cccccc);\n  background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0, #eeeeee),color-stop(1, #cccccc));\n  background-image: -webkit-linear-gradient(top, #eeeeee, #cccccc);\n  background-image: -moz-linear-gradient(top, #eeeeee, #cccccc);\n  background-image: -ms-linear-gradient(top, #eeeeee, #cccccc);\n  background-image: -o-linear-gradient(top, #eeeeee, #cccccc);\n}\n.star-rating .star-value {\n  height: 100%;\n  position: absolute;\n  background-color: #ffbe10;\n}\n.star-rating .star-bg {\n  position: absolute;\n  height: 100%;\n  width: 100%;\n  background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0NSIgaGVpZ2h0PSI0MCIgdmlld0JveD0iMCAwIDYwIDQ4Ij48dGl0bGU+U3RhcjwvdGl0bGU+PHBhdGggZD0iTTE2LjMgNDMuNDA1Yy4wMDMtLjA4My45MzctMy41MDcgMi4wNzYtNy42MDggMS43NC02LjI2IDIuMDQ4LTcuNDg1IDEuOTI0LTcuNjI4LS4wODItLjA5NC0yLjczNy0yLjMzLTUuOS00Ljk3MmwtNS43NTMtNC44MDMgNy42LS4wMyA3LjYwMi0uMDI4IDIuNTItNy41N2MxLjM4OC00LjE2MyAyLjU1Mi03LjU3IDIuNTg3LTcuNTcuMDM1IDAgMS4xOCAzLjM5NSAyLjU0OCA3LjU0M2wyLjQ4NiA3LjU0MiA3LjYyMi4wNTcgNy42MjIuMDU1LTUuODc2IDQuOTA1LTUuOTA3IDQuOTI3Yy0uMDE2LjAxMy45MTUgMy40NDMgMi4wNyA3LjYyIDEuMTU4IDQuMTggMi4wODcgNy42MTQgMi4wNjcgNy42MzMtLjAyLjAyLTIuODYtMS45NjctNi4zMDgtNC40MTQtMy40NS0yLjQ0OC02LjMyNi00LjQzMi02LjM5Mi00LjQxLS4xLjAzNi0xMC4zNzYgNy4yOS0xMi4wNTUgOC41MS0uMzIyLjIzNC0uNTM1LjMzLS41MzMuMjR6IiBmaWxsPSJub25lIi8+PHBhdGggZD0iTTAtMi42Njd2NTMuMzM0aDYwVi0yLjY2N0gwem0zMC4yOTIgMS43MWw3LjEyNSAxOC44NzRoMjEuNDE2TDQyLjE2NyAzMC4wODNsNS45NTggMTguODc1LTE3LjgzMy0xMS4wODMtMTcuODM0IDExLjA4MyA1LjkxNy0xOC44NzVMMS43NSAxNy45MTdoMjEuMzc1TDMwLjI5Mi0uOTU4eiIgZmlsbD0iI2ZmZiIvPjxwYXRoIGQ9Ik0zMC4yNzctLjk1MkwzNy40MTIgMTcuOWgyMS40MDRMNDIuMTY4IDMwLjFsNS45NDYgMTguODUyLTE3LjgzNy0xMS4wOS0xNy44MzcgMTEuMDlMMTguMzg2IDMwLjEgMS43MzggMTcuOWgyMS40MDR6IiBmaWxsPSJub25lIiBzdHJva2U9IiMwMDAiIHN0cm9rZS13aWR0aD0iLjMzNSIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPjwvc3ZnPg==') repeat;\n  background-size: contain;\n}\n"; (require("browserify-css").createStyle(css, { "href": "lib\\style.css" }, { "insertAt": "bottom" })); module.exports = css;
+var css = ".star-rating {\n  width: 0;\n  position: relative;\n  display: inline-block;\n  background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDguOSIgaGVpZ2h0PSIxMDMuNiIgdmlld0JveD0iMCAwIDEwOC45IDEwMy42Ij48ZGVmcz48c3R5bGU+LmNscy0xe2ZpbGw6I2UzZTZlNjt9PC9zdHlsZT48L2RlZnM+PHRpdGxlPnN0YXJfMDwvdGl0bGU+PGcgaWQ9IkxheWVyXzIiIGRhdGEtbmFtZT0iTGF5ZXIgMiI+PGcgaWQ9IkxheWVyXzEtMiIgZGF0YS1uYW1lPSJMYXllciAxIj48cG9seWdvbiBjbGFzcz0iY2xzLTEiIHBvaW50cz0iMTA4LjkgMzkuNiA3MS4zIDM0LjEgNTQuNCAwIDM3LjYgMzQuMSAwIDM5LjYgMjcuMiA2Ni4xIDIwLjggMTAzLjYgNTQuNCA4NS45IDg4LjEgMTAzLjYgODEuNyA2Ni4xIDEwOC45IDM5LjYiLz48L2c+PC9nPjwvc3ZnPgo=);\n  background-position: 0 0;\n  background-repeat: repeat-x;\n}\n.star-rating[data-title]:hover:after {\n  content: attr(data-title);\n  padding: 4px 8px;\n  color: #333;\n  position: absolute;\n  left: 0;\n  top: 100%;\n  z-index: 20;\n  white-space: nowrap;\n  -moz-border-radius: 5px;\n  -webkit-border-radius: 5px;\n  border-radius: 5px;\n  -moz-box-shadow: 0px 0px 4px #222;\n  -webkit-box-shadow: 0px 0px 4px #222;\n  box-shadow: 0px 0px 4px #222;\n  background-image: -moz-linear-gradient(top, #eeeeee, #cccccc);\n  background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0, #eeeeee),color-stop(1, #cccccc));\n  background-image: -webkit-linear-gradient(top, #eeeeee, #cccccc);\n  background-image: -moz-linear-gradient(top, #eeeeee, #cccccc);\n  background-image: -ms-linear-gradient(top, #eeeeee, #cccccc);\n  background-image: -o-linear-gradient(top, #eeeeee, #cccccc);\n}\n.star-rating .star-value {\n  height: 100%;\n  position: absolute;\n}\n.star-rating .star-value {\n  position: absolute;\n  height: 100%;\n  width: 100%;\n  background: url('data:image/svg+xml;base64,PHN2ZwoJeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iMTA4LjkiIGhlaWdodD0iMTAzLjYiIHZpZXdCb3g9IjAgMCAxMDguOSAxMDMuNiI+Cgk8ZGVmcz4KCQk8c3R5bGU+LmNscy0xe2ZpbGw6I2YxYzk0Nzt9PC9zdHlsZT4KCTwvZGVmcz4KCTx0aXRsZT5zdGFyMTwvdGl0bGU+Cgk8ZyBpZD0iTGF5ZXJfMiIgZGF0YS1uYW1lPSJMYXllciAyIj4KCQk8ZyBpZD0iTGF5ZXJfMS0yIiBkYXRhLW5hbWU9IkxheWVyIDEiPgoJCQk8cG9seWdvbiBjbGFzcz0iY2xzLTEiIHBvaW50cz0iNTQuNCAwIDcxLjMgMzQuMSAxMDguOSAzOS42IDgxLjcgNjYuMSA4OC4xIDEwMy42IDU0LjQgODUuOSAyMC44IDEwMy42IDI3LjIgNjYuMSAwIDM5LjYgMzcuNiAzNC4xIDU0LjQgMCIvPgoJCTwvZz4KCTwvZz4KPC9zdmc+Cg==');\n  background-repeat: repeat-x;\n}\n"; (require("browserify-css").createStyle(css, { "href": "lib\\style.css" }, { "insertAt": "bottom" })); module.exports = css;
 },{"browserify-css":3}],3:[function(require,module,exports){
 'use strict';
 // For more information about browser field, check out the browser field at https://github.com/substack/browserify-handbook#browser-field.
