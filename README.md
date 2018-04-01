@@ -13,6 +13,7 @@ Rater Js
 ### Main features:
 
 * Unlimited number of stars.
+* Svg as background image makes it look good in any size.
 * Custom css. Use your own image as star.
 
 [**Try Rater JS  Demo →**][RaterJS]
@@ -73,7 +74,6 @@ Lastly we can use the widget like this:
 Css will be injected at runtime, but you can override the css to get the look you want.
 
 ```css
-
 //change the whole image used as the star. Make sure to set starSize in options if not 16px.
 //first image is for the 'off' mode
 .star-rating {
