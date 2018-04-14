@@ -43,6 +43,20 @@ module.exports = function rater(options) {
 	
 	var ratingText = options.ratingText || "{rating}/{maxRating}"; 
 
+	if(options.rating){
+		setRating(options.rating);
+	} else {
+		var dataRating = elem.dataset.rating;
+
+		if(dataRating){
+			setRating(+dataRating);
+		}
+	}
+
+	if(typeof rating === "undefined"){
+		elem.querySelector(".star-value").style.width = "0px"; 
+	}
+
 	//private methods
 	function onMouseMove(e) {
 
@@ -136,14 +150,22 @@ module.exports = function rater(options) {
 	}
 
 	function setRating(value) {
-		rating = value; 
-
-		if (typeof value !== "undefined") {
-			elem.querySelector(".star-value").style.width = value/stars * 100 + "%"; 
-		}else {
-			elem.querySelector(".star-value").style.width = "0px"; 
+		if(typeof value === "undefined"){
+			throw new Error("Value not set.");
 		}
 
+		if(typeof value !== "number"){
+			throw new Error("Value must be a number.");
+		}
+
+		if(value < 0 || value > stars){
+			let ratingError = new Error("Value too high. Please set a rating of " + stars + " or below");
+			ratingError.name = "ratingError";
+			throw ratingError;
+		}
+
+		rating = value;
+		elem.querySelector(".star-value").style.width = value/stars * 100 + "%"; 
 		elem.setAttribute("data-rating", value); 
 	}
 
@@ -156,8 +178,7 @@ module.exports = function rater(options) {
 		elem.removeEventListener("mouseout", onStarOut); 
 		elem.removeEventListener("click", onStarClick); 
 	}
-
-	setRating(options.rating); 
+	
 	elem.addEventListener("mousemove", onMouseMove); 
 	elem.addEventListener("mouseout", onStarOut); 
 

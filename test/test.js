@@ -32,6 +32,15 @@ describe('RaterJs', function() {
         assert.equal(rater.getRating(),4);
     });
 
+    it('should set rating from data-rating if present', function() {
+
+        const dom2 = new JSDOM(`<!DOCTYPE html><div data-rating="4" id="rater">test</div>`);
+        const element2 = dom2.window.document.querySelector("#rater");
+
+        let rater = raterJs({ element:element2});
+        assert.equal(rater.getRating(),4);
+    });
+
     it('clicking a the star should trigger callback', function() {
         let callbackSpy = sinon.spy();
         let rater = raterJs({ element:element, rating:3, rateCallback:callbackSpy });
@@ -39,5 +48,42 @@ describe('RaterJs', function() {
         evt.initEvent("click", false, true);
         element.dispatchEvent(evt);
         sinon.assert.calledOnce(callbackSpy);
+    });
+
+    
+    it('setRating should throw when rating is below 0', function() {
+        let rater = raterJs({ element:element, rating:3 });
+
+        assert.throws(() => {
+            rater.setRating(-1);
+        });
+
+        assert.throws(() => {
+            rater.setRating(-0.1);
+        });
+    });
+
+    it('setRating should throw when rating is above max', function() {
+        let rater = raterJs({ element:element, max:5 });
+
+        assert.throws(() => {
+            rater.setRating(6);
+        });
+
+        assert.throws(() => {
+            rater.setRating(5.1);
+        });
+    });
+
+    it('setRating should throw when rating is not a number', function() {
+        let rater = raterJs({ element:element, max:5 });
+
+        assert.throws(() => {
+            rater.setRating(undefined);
+        });
+
+        assert.throws(() => {
+            rater.setRating("3");
+        });
     });
 });
