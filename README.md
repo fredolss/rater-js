@@ -88,19 +88,15 @@ Css will be injected at runtime, but you can override the css to get the look yo
 
 ## Configuration
 
-```js
-{
-        element: HtmlElement, //required
-        rateCallback: Function,
-        max: "Number of stars",
-        starSize: "Width and height of the star image in pixels",
-        disableText: "Text",
-        ratingText: "Text {rating} {maxRating}",
-        isBusyText: "Text", //displayed while user is rating but done not called yet
-        readOnly: true/false
-}
-
-```
+element: HtmlElement, required
+rateCallback: Function
+max: "Number of stars"
+showToolTip: true/false
+starSize: "Width and height of the star image in pixels"
+disableText: "Text"
+ratingText: "Text {rating} {maxRating}"
+isBusyText: "Text", //displayed while user is rating but done not called yet
+readOnly: true/false
 
 ## Methods
 
@@ -109,6 +105,7 @@ disable(): //Disable the widget
 enable(): //Enable the widget
 setRating(rating:number): //Set the rating
 getRating(): //Get the average rating
+dispose(); //Removes event handlers
 ```
 
 
