@@ -88,15 +88,17 @@ Css will be injected at runtime, but you can override the css to get the look yo
 
 ## Configuration
 
-element: HtmlElement, required
-rateCallback: Function
-max: "Number of stars"
-showToolTip: true/false
-starSize: "Width and height of the star image in pixels"
-disableText: "Text"
-ratingText: "Text {rating} {maxRating}"
-isBusyText: "Text", //displayed while user is rating but done not called yet
-readOnly: true/false
+| Property      | Description            |
+| ------------- |:----------------------:|
+| element       | HtmlElement. Required.   |
+| rateCallback  | Function. Triggered when star i clicked.               | 
+| max           | Number. Number of stars to show.      |
+| showToolTip   | true/false. Will show or not show tooltip when hover the stars.            |
+| starSize      | Number. Width and height of the star image.      |
+| disableText   | Text to show when disabled.   |
+| ratingText    | Text to show when hover over stars. Text {rating} {maxRating}.   |
+| isBusyText    | displayed while user is rating but done not called yet.  |
+| readOnly      | true/false. Will disable the rater.  |
 
 ## Methods
 
