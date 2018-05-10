@@ -85,7 +85,6 @@ module.exports = function rater(options) {
 				toolTip = toolTip.replace("{maxRating}", stars); 
 				elem.setAttribute("data-title", toolTip); 
 			}
-		
 			elem.querySelector(".star-value").style.width = currentRating/stars * 100 + "%"; 
 		
 			if (typeof onHover === "function") {
@@ -95,14 +94,15 @@ module.exports = function rater(options) {
 	}
 
 	function onStarOut(e) {
+
 		block = false; 
 
-		if (typeof rating != "undefined") {
+		if (typeof rating !== "undefined") {
 			elem.querySelector(".star-value").style.width = rating/stars * 100 + "%"; 
 			elem.setAttribute("data-rating", rating); 
-		}else {
+		} else {
 			elem.querySelector(".star-value").style.width = "0%"; 
-			elem.setAttribute("data-rating", undefined); 
+			elem.removeAttribute("data-rating");
 		}
 
 		if (typeof onLeave === "function") {
@@ -177,12 +177,12 @@ module.exports = function rater(options) {
 
 	function dispose() {
 		elem.removeEventListener("mousemove", onMouseMove); 
-		elem.removeEventListener("mouseout", onStarOut); 
+		elem.removeEventListener("mouseleave", onStarOut); 
 		elem.removeEventListener("click", onStarClick); 
 	}
 	
 	elem.addEventListener("mousemove", onMouseMove); 
-	elem.addEventListener("mouseout", onStarOut); 
+	elem.addEventListener("mouseleave", onStarOut); 
 
 	var module =  {
 		setRating:setRating, 
