@@ -20,6 +20,16 @@ function onload(event) {
 		}
 	}); 
 
+	var starRatingStep = raterJs( {
+		starSize:32,
+		step:0.5,
+		element:document.querySelector("#rater-step"),
+		rateCallback:function rateCallback(rating, done) {
+			this.setRating(rating); 
+			done(); 
+		}
+	}); 
+
    var starRating4 = raterJs( { isBusyText: "Rating in progress. Please wait...",
 		element:document.querySelector("#rater4"),
 		rateCallback:function rateCallback(rating, done) {

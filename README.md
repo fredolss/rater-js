@@ -99,6 +99,7 @@ Css will be injected at runtime, but you can override the css to get the look yo
 | ratingText    | Text to show when hover over stars. Text {rating} {maxRating}.   |
 | isBusyText    | displayed while user is rating but done not called yet.  |
 | readOnly      | true/false. Will disable the rater.  |
+| step          | Number. Set a precision between 0 and 1 for the rating.  |
 
 ## Methods
 

@@ -11,6 +11,7 @@
 <pre>
     <code>
     {
+        starSize:32,
         element:document.querySelector("#rater"),
         rateCallback:function rateCallback(rating, done) {
             this.setRating(rating); 
@@ -21,6 +22,27 @@
 </pre>
 
 <hr>
+
+<h2>5 star rater with step</h2>
+
+<div id="rater-step"></div>
+
+<pre>
+    <code>
+    {
+        element:document.querySelector("#rater"),
+        rateCallback:function rateCallback(rating, done) {
+            this.setRating(rating); 
+            done(); 
+        },
+        starSize:32,
+        step:0.5
+    }
+</code>
+</pre>
+
+<hr>
+
 
 <h2>Custom messages</h2>
 

@@ -86,4 +86,34 @@ describe('RaterJs', function() {
             rater.setRating("3");
         });
     });
+
+    it('should throw when step is 0 or below', function() {
+       
+        assert.throws(() => {
+            let rater = raterJs({ element:element, step:0 });
+        });
+
+        assert.throws(() => {
+            let rater = raterJs({ element:element, step:-0.0001 });
+        });
+    });
+
+    it('should throw when step is above 1', function() {
+               
+        assert.throws(() => {
+            raterJs({ element:element, step:1.0001 });
+        });
+    });
+
+    it('should not throw when step is between 0 and 1', function() {
+        
+        assert.doesNotThrow(() => {
+            let rater = raterJs({ element:element, step: 0.01 });
+        });
+
+        assert.doesNotThrow(() => {
+            let rater = raterJs({ element:element, step:0.999 });
+        });
+    });
+
 });

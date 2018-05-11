@@ -16,8 +16,15 @@ module.exports = function rater(options) {
 		showToolTip =  !!options.showToolTip; 
 	} 
 
+	if(typeof options.step !== "undefined") {
+		if(options.step <= 0 || options.step > 1){
+			throw new Error("step must be a number between 0 and 1");
+		}
+	}
+
 	var stars = options.max || 5; 
-	var starSize = options.starSize || 16; 
+	var starSize = options.starSize || 16;
+	var step = options.step || 1;
 	var onHover = options.onHover; 
 	var onLeave = options.onLeave; 
 	var rating; 
@@ -32,7 +39,7 @@ module.exports = function rater(options) {
 	elem.style.height = starSize + "px"; 
 	elem.style.backgroundSize = starSize + "px"; 
 	var callback = options.rateCallback; 
-	var disabled =  !  ! options.readOnly; 
+	var disabled =  !!options.readOnly; 
 	var block = false; 
 	var disableText; 
 	var isRating = false; 
@@ -79,7 +86,18 @@ module.exports = function rater(options) {
 		var percent = (xCoor/width) * 100; 
 
 		if (percent < 101) {
-			currentRating = Math.ceil((percent / 100) * stars); 
+			if(step === 1) {
+				currentRating = Math.ceil((percent / 100) * stars);
+			} else {
+				var rat = (percent / 100) * stars;
+				for(var i = 0;; i+=step){
+					if(i >= rat){
+						currentRating = i;
+						break;
+					}
+				}
+			}
+			 
 			if (showToolTip) {
 				let toolTip = ratingText.replace("{rating}", currentRating); 
 				toolTip = toolTip.replace("{maxRating}", stars); 
@@ -124,7 +142,7 @@ module.exports = function rater(options) {
 			isRating = true; 
 			if (typeof isBusyText === "undefined") {
 				elem.removeAttribute("data-title"); 
-			}else {
+			} else {
 				elem.setAttribute("data-title", isBusyText); 
 			}
 			
@@ -148,7 +166,7 @@ module.exports = function rater(options) {
 
 	function enable() {
 		disabled = false; 
-		elem.setAttribute("data-title", undefined); 
+		elem.removeAttribute("data-title");
 	}
 
 	function setRating(value) {
