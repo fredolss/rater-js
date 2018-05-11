@@ -40,7 +40,6 @@ module.exports = function rater(options) {
 	elem.style.backgroundSize = starSize + "px"; 
 	var callback = options.rateCallback; 
 	var disabled =  !!options.readOnly; 
-	var block = false; 
 	var disableText; 
 	var isRating = false; 
 	var isBusyText = options.isBusyText; 
@@ -77,7 +76,7 @@ module.exports = function rater(options) {
 			}
 		}
 
-		if (disabled === true || block === true || isRating === true) {
+		if (disabled === true || isRating === true) {
 			return; 
 		}
 		
@@ -113,8 +112,6 @@ module.exports = function rater(options) {
 
 	function onStarOut(e) {
 
-		block = false; 
-
 		if (typeof rating !== "undefined") {
 			elem.querySelector(".star-value").style.width = rating/stars * 100 + "%"; 
 			elem.setAttribute("data-rating", rating); 
@@ -133,13 +130,14 @@ module.exports = function rater(options) {
 			return; 
 		}
 
-		if (isRating) {
+		if (isRating === true) {
 			return; 
 		}
 
 		if (typeof callback !== "undefined") {
+			isRating = true;
 			myRating = currentRating; 
-			isRating = true; 
+
 			if (typeof isBusyText === "undefined") {
 				elem.removeAttribute("data-title"); 
 			} else {
@@ -147,15 +145,13 @@ module.exports = function rater(options) {
 			}
 			
 			callback.call(this, myRating, function() {
-				isRating = false; 
-
-				if (disabled === false) {
+		        if (disabled === false) {
 					elem.removeAttribute("data-title"); 
 				}
+
+				isRating = false; 
 			}); 
 		}
-
-		block = true; 
 	}
 
 	//public methods
