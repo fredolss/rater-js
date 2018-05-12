@@ -2,7 +2,7 @@ Rater Js
 ========
 
 ![rater-js Logo](ratings.png)
-[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=N2F7QTTZAHKZS)
+[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://paypal.me/folssondev)
 [![NPM version][npm-image]][npm-url]
 [![License][license-image]][license-url]
 [![Downloads][downloads-image]][downloads-url]
