@@ -7,6 +7,7 @@ interface RaterOptions {
     ratingText?:string;
     showToolTip?:boolean;
     starSize?:number;
+    step?:number;
 }
 
 interface Rater {
