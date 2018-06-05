@@ -5,6 +5,7 @@
     background-image: url(star_0.svg);
     background-position: 0 0;
     background-repeat: repeat-x;
+    cursor: pointer;
 }
 
 .star-rating[data-title]:hover:after {
