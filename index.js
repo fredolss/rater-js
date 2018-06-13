@@ -176,12 +176,8 @@ module.exports = function rater(options) {
   }
 
   function setRating(value) {
-    if (typeof value === "undefined") {
-      throw new Error("Value not set.");
-    }
-
-    if (typeof value !== "number") {
-      throw new Error("Value must be a number.");
+    if (typeof value !== "number" && typeof value !== "undefined") {
+      throw new Error("Value must be a number or undefined.");
     }
 
     if (value < 0 || value > stars) {
