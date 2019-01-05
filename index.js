@@ -86,6 +86,8 @@ module.exports = function rater(options) {
     var width = elem.offsetWidth;
     var percent = xCoor / width * 100;
 
+    console.log(e);
+
     if (percent < 101) {
       if (step === 1) {
         currentRating = Math.ceil(percent / 100 * stars);
