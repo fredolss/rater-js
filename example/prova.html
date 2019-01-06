@@ -1,14 +1,13 @@
 <!DOCTYPE html>
-<html lang="it" dir="rtl">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-<title>Rater Js Example</title>
+    <title>Rater Js Example</title>
 
     <script src="../index.js?v=2"></script>
-    <link rel="stylesheet" type="text/css" href="../lib/style.css">
 
 
-    <style type="text/css">
+    <style>
 
         .star-rating .star-value {
             -moz-transform: scaleX(-1);
@@ -27,25 +26,34 @@
 </head>
 
 <body style="margin-right: 40%;">
- 
-<h1>Rater Js Example</h1> 
+
+<h1>Rater Js Example</h1>
 
 <h2>Basic 5 star rater</h2>
 
-<div id="rater"></div>
+<div id="rater" style="border-color: red; border-width: 5px; border-style: solid"></div>
 
 <script>
 
-    raterJs( {
+   /* raterJs( {
         starSize:32,
         element:document.getElementById("rater"),
-        step: 0.1,
-        starSize: 24
-        /*rateCallback:function rateCallback(rating, done) {
+        rateCallback:function rateCallback(rating, done) {
             this.setRating(rating);
             done();
-        }*/
-    });
+        }
+    });*/
+
+    var elem = document.getElementById('rater');
+
+   function onMouseMove(e) {
+
+       console.log(e);
+
+   }
+
+
+    elem.addEventListener("mousemove", onMouseMove);
 
 </script>
 
