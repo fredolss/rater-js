@@ -138,6 +138,31 @@
 
 <hr>
 
+<h2>Clear/reset rater</h2>
+
+<div>
+    <span id="rater6"></span>
+    <span class="clear-rating"></span>
+    <button id="rater6-button">Reset</button>
+</div>
+
+<pre>
+    <code>
+    {
+        element:document.querySelector("#rater6"),
+        rateCallback:function rateCallback(rating, done) {
+            this.setRating(rating); 
+            done(); 
+        }
+    }
+
+    document.querySelector('#rater6-button').addEventListener("click", function() {
+        starRating6.clear();
+    }, false); 
+
+</code>
+</pre>
+
 <script src="../index.js?v=2"></script>
 <script src="index.js?v=2"></script>
 </body>

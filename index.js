@@ -4,8 +4,9 @@
 /*! rater-js. [c] 2018 Fredrik Olsson. MIT License */
 var css = require('./style.css');
 
-module.exports = function rater(options) {
-  //private fields
+module.exports = function (options) {
+  console.log("creating rater"); //private fields
+
   var showToolTip = true;
 
   if (typeof options.element === "undefined" || options.element === null) {
@@ -27,7 +28,7 @@ module.exports = function rater(options) {
   var step = options.step || 1;
   var onHover = options.onHover;
   var onLeave = options.onLeave;
-  var rating;
+  var rating = null;
   var myRating;
   var elem = options.element;
   elem.classList.add("star-rating");
@@ -68,7 +69,7 @@ module.exports = function rater(options) {
     }
   }
 
-  if (typeof rating === "undefined") {
+  if (!rating) {
     elem.querySelector(".star-value").style.width = "0px";
   }
 
@@ -115,12 +116,12 @@ module.exports = function rater(options) {
   }
 
   function onStarOut(e) {
-    if (typeof rating !== "undefined") {
-      elem.querySelector(".star-value").style.width = rating / stars * 100 + "%";
-      elem.setAttribute("data-rating", rating);
-    } else {
+    if (!rating) {
       elem.querySelector(".star-value").style.width = "0%";
       elem.removeAttribute("data-rating");
+    } else {
+      elem.querySelector(".star-value").style.width = rating / stars * 100 + "%";
+      elem.setAttribute("data-rating", rating);
     }
 
     if (typeof onLeave === "function") {
@@ -176,8 +177,16 @@ module.exports = function rater(options) {
   }
 
   function setRating(value) {
-    if (typeof value !== "number" && typeof value !== "undefined") {
-      throw new Error("Value must be a number or undefined.");
+    if (typeof value === "undefined") {
+      throw new Error("Value not set.");
+    }
+
+    if (value === null) {
+      throw new Error("Value cannot be null.");
+    }
+
+    if (typeof value !== "number") {
+      throw new Error("Value must be a number.");
     }
 
     if (value < 0 || value > stars) {
@@ -195,6 +204,12 @@ module.exports = function rater(options) {
     return rating;
   }
 
+  function clear() {
+    rating = null;
+    elem.querySelector(".star-value").style.width = "0px";
+    elem.removeAttribute("data-title");
+  }
+
   function dispose() {
     elem.removeEventListener("mousemove", onMouseMove);
     elem.removeEventListener("mouseleave", onStarOut);
@@ -208,6 +223,7 @@ module.exports = function rater(options) {
     getRating: getRating,
     disable: disable,
     enable: enable,
+    clear: clear,
     dispose: dispose
   };
   elem.addEventListener("click", onStarClick.bind(module));

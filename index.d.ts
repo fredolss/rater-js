@@ -15,7 +15,8 @@ interface Rater {
     enable:() => void;
     dispose: ()=> void;
     setRating:(ratig) => void; 
-    getRating:() => number; 
+    getRating:() => number;
+    clear:() => void;
 }
 
 declare module "rater-js" {
