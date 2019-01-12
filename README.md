@@ -109,6 +109,7 @@ enable(): //Enable the widget
 setRating(rating:number): //Set the rating
 getRating(): //Get the average rating
 dispose(); //Removes event handlers
+clear(); //Clears the rating
 ```
 
 

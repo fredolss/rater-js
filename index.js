@@ -5,8 +5,7 @@
 var css = require('./style.css');
 
 module.exports = function (options) {
-  console.log("creating rater"); //private fields
-
+  //private fields
   var showToolTip = true;
 
   if (typeof options.element === "undefined" || options.element === null) {
@@ -79,11 +78,20 @@ module.exports = function (options) {
 
 
   function onMouseMove(e) {
+    onMove(e.offsetX);
+  }
+  /**
+   * Called by eventhandlers when mouse or touch events are triggered
+   * @param {number} x
+   */
+
+
+  function onMove(x) {
     if (disabled === true || isRating === true) {
       return;
     }
 
-    var xCoor = e.offsetX;
+    var xCoor = x;
     var width = elem.offsetWidth;
     var percent = xCoor / width * 100;
 
@@ -114,6 +122,11 @@ module.exports = function (options) {
       }
     }
   }
+  /**
+   * Called when mouse is released. This function will update the view with the rating.
+   * @param {MouseEvent} e
+   */
+
 
   function onStarOut(e) {
     if (!rating) {
@@ -128,6 +141,11 @@ module.exports = function (options) {
       onLeave(currentRating, rating);
     }
   }
+  /**
+   * Called when star is clicked.
+   * @param {MouseEvent} e
+   */
+
 
   function onStarClick(e) {
     if (disabled === true) {
@@ -156,7 +174,10 @@ module.exports = function (options) {
         isRating = false;
       });
     }
-  } //public methods
+  }
+  /**
+   * Disables the rater so that it's not possible to click the stars.
+   */
 
 
   function disable() {
@@ -170,11 +191,19 @@ module.exports = function (options) {
       elem.removeAttribute("data-title");
     }
   }
+  /**
+   * Enabled the rater so that it's possible to click the stars.
+   */
+
 
   function enable() {
     disabled = false;
     elem.removeAttribute("data-title");
   }
+  /**
+   * Sets the rating
+   */
+
 
   function setRating(value) {
     if (typeof value === "undefined") {
@@ -199,21 +228,37 @@ module.exports = function (options) {
     elem.querySelector(".star-value").style.width = value / stars * 100 + "%";
     elem.setAttribute("data-rating", value);
   }
+  /**
+   * Gets the rating
+   */
+
 
   function getRating() {
     return rating;
   }
+  /**
+   * Set the rating to a value to inducate it's not rated.
+   */
+
 
   function clear() {
     rating = null;
     elem.querySelector(".star-value").style.width = "0px";
     elem.removeAttribute("data-title");
   }
+  /**
+   * Remove event handlers.
+   */
+
 
   function dispose() {
     elem.removeEventListener("mousemove", onMouseMove);
     elem.removeEventListener("mouseleave", onStarOut);
     elem.removeEventListener("click", onStarClick);
+    elem.removeEventListener("touchmove", handleMove, false);
+    elem.removeEventListener("touchstart", handleStart, false);
+    elem.removeEventListener("touchend", handleEnd, false);
+    elem.removeEventListener("touchcancel", handleCancel, false);
   }
 
   elem.addEventListener("mousemove", onMouseMove);
@@ -226,7 +271,51 @@ module.exports = function (options) {
     clear: clear,
     dispose: dispose
   };
+  /**
+  * Handles touchmove event.
+  * @param {TouchEvent} e
+  */
+
+  function handleMove(e) {
+    e.preventDefault();
+    onMove(e.changedTouches[0].pageX - e.changedTouches[0].target.offsetLeft);
+  }
+  /**
+   * Handles touchstart event.
+   * @param {TouchEvent} e 
+   */
+
+
+  function handleStart(e) {
+    e.preventDefault();
+    onMove(e.changedTouches[0].pageX - e.changedTouches[0].target.offsetLeft);
+  }
+  /**
+   * Handles touchend event.
+   * @param {TouchEvent} e 
+   */
+
+
+  function handleEnd(evt) {
+    evt.preventDefault();
+    onMove(evt.changedTouches[0].pageX - evt.changedTouches[0].target.offsetLeft);
+  }
+  /**
+   * Handles touchend event.
+   * @param {TouchEvent} e 
+   */
+
+
+  function handleCancel(e) {
+    e.preventDefault();
+    onStarOut(e);
+  }
+
   elem.addEventListener("click", onStarClick.bind(module));
+  elem.addEventListener("touchmove", handleMove, false);
+  elem.addEventListener("touchstart", handleStart, false);
+  elem.addEventListener("touchend", handleEnd, false);
+  elem.addEventListener("touchcancel", handleCancel, false);
   return module;
 };
 

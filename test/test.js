@@ -173,5 +173,4 @@ describe('RaterJs', function() {
             let rater = raterJs({ element:element, step:0.999 });
         });
     });
-
 });

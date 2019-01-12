@@ -1,6 +1,6 @@
 interface RaterOptions {
     element:HTMLElement;
-    rateCallback?:(callback:(rating:number) => void) => any; 
+    rateCallback?:(rating: number, done?: () => any) => any; 
     max?:number; 
     rating?:number; 
     disableText?:string; 
@@ -8,13 +8,14 @@ interface RaterOptions {
     showToolTip?:boolean;
     starSize?:number;
     step?:number;
+    readOnly?:boolean;
 }
 
 interface Rater {
     disable:() => void; 
     enable:() => void;
     dispose: ()=> void;
-    setRating:(ratig) => void; 
+    setRating:(rating) => void; 
     getRating:() => number;
     clear:() => void;
 }
