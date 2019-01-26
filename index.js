@@ -1,4 +1,4 @@
-(function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.raterJs = f()}})(function(){var define,module,exports;return (function(){function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s}return e})()({1:[function(require,module,exports){
+(function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.raterJs = f()}})(function(){var define,module,exports;return (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
 "use strict";
 
 /*! rater-js. [c] 2018 Fredrik Olsson. MIT License */
@@ -114,7 +114,7 @@ module.exports = function (options) {
       if (showToolTip) {
         var toolTip = ratingText.replace("{rating}", currentRating);
         toolTip = toolTip.replace("{maxRating}", stars);
-        elem.setAttribute("data-title", toolTip);
+        elem.setAttribute("title", toolTip);
       }
 
       if (typeof onHover === "function") {
@@ -161,14 +161,14 @@ module.exports = function (options) {
       myRating = currentRating;
 
       if (typeof isBusyText === "undefined") {
-        elem.removeAttribute("data-title");
+        elem.removeAttribute("title");
       } else {
-        elem.setAttribute("data-title", isBusyText);
+        elem.setAttribute("title", isBusyText);
       }
 
       callback.call(this, myRating, function () {
         if (disabled === false) {
-          elem.removeAttribute("data-title");
+          elem.removeAttribute("title");
         }
 
         isRating = false;
@@ -186,9 +186,9 @@ module.exports = function (options) {
     if (showToolTip && !!disableText) {
       var toolTip = disableText.replace("{rating}", rating);
       toolTip = toolTip.replace("{maxRating}", stars);
-      elem.setAttribute("data-title", toolTip);
+      elem.setAttribute("title", toolTip);
     } else {
-      elem.removeAttribute("data-title");
+      elem.removeAttribute("title");
     }
   }
   /**
@@ -198,7 +198,7 @@ module.exports = function (options) {
 
   function enable() {
     disabled = false;
-    elem.removeAttribute("data-title");
+    elem.removeAttribute("title");
   }
   /**
    * Sets the rating
@@ -219,9 +219,7 @@ module.exports = function (options) {
     }
 
     if (value < 0 || value > stars) {
-      var ratingError = new Error("Value too high. Please set a rating of " + stars + " or below.");
-      ratingError.name = "ratingError";
-      throw ratingError;
+      throw new Error("Value too high. Please set a rating of " + stars + " or below.");
     }
 
     rating = value;
@@ -244,7 +242,7 @@ module.exports = function (options) {
   function clear() {
     rating = null;
     elem.querySelector(".star-value").style.width = "0px";
-    elem.removeAttribute("data-title");
+    elem.removeAttribute("title");
   }
   /**
    * Remove event handlers.
@@ -269,7 +267,12 @@ module.exports = function (options) {
     disable: disable,
     enable: enable,
     clear: clear,
-    dispose: dispose
+    dispose: dispose,
+
+    get element() {
+      return elem;
+    }
+
   };
   /**
   * Handles touchmove event.
@@ -320,7 +323,7 @@ module.exports = function (options) {
 };
 
 },{"./style.css":2}],2:[function(require,module,exports){
-var css = ".star-rating {\n  width: 0;\n  position: relative;\n  display: inline-block;\n  background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDguOSIgaGVpZ2h0PSIxMDMuNiIgdmlld0JveD0iMCAwIDEwOC45IDEwMy42Ij48ZGVmcz48c3R5bGU+LmNscy0xe2ZpbGw6I2UzZTZlNjt9PC9zdHlsZT48L2RlZnM+PHRpdGxlPnN0YXJfMDwvdGl0bGU+PGcgaWQ9IkxheWVyXzIiIGRhdGEtbmFtZT0iTGF5ZXIgMiI+PGcgaWQ9IkxheWVyXzEtMiIgZGF0YS1uYW1lPSJMYXllciAxIj48cG9seWdvbiBjbGFzcz0iY2xzLTEiIHBvaW50cz0iMTA4LjkgMzkuNiA3MS4zIDM0LjEgNTQuNCAwIDM3LjYgMzQuMSAwIDM5LjYgMjcuMiA2Ni4xIDIwLjggMTAzLjYgNTQuNCA4NS45IDg4LjEgMTAzLjYgODEuNyA2Ni4xIDEwOC45IDM5LjYiLz48L2c+PC9nPjwvc3ZnPgo=);\n  background-position: 0 0;\n  background-repeat: repeat-x;\n  cursor: pointer;\n}\n.star-rating[data-title]:hover:after {\n  content: attr(data-title);\n  padding: 4px 8px;\n  color: #333;\n  position: absolute;\n  left: 0;\n  top: 100%;\n  z-index: 20;\n  white-space: nowrap;\n  -moz-border-radius: 5px;\n  -webkit-border-radius: 5px;\n  border-radius: 5px;\n  -moz-box-shadow: 0px 0px 4px #222;\n  -webkit-box-shadow: 0px 0px 4px #222;\n  box-shadow: 0px 0px 4px #222;\n  background-image: -moz-linear-gradient(top, #eeeeee, #cccccc);\n  background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0, #eeeeee),color-stop(1, #cccccc));\n  background-image: -webkit-linear-gradient(top, #eeeeee, #cccccc);\n  background-image: -moz-linear-gradient(top, #eeeeee, #cccccc);\n  background-image: -ms-linear-gradient(top, #eeeeee, #cccccc);\n  background-image: -o-linear-gradient(top, #eeeeee, #cccccc);\n}\n.star-rating .star-value {\n  height: 100%;\n  position: absolute;\n}\n.star-rating .star-value {\n  position: absolute;\n  height: 100%;\n  width: 100%;\n  background: url('data:image/svg+xml;base64,PHN2ZwoJeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iMTA4LjkiIGhlaWdodD0iMTAzLjYiIHZpZXdCb3g9IjAgMCAxMDguOSAxMDMuNiI+Cgk8ZGVmcz4KCQk8c3R5bGU+LmNscy0xe2ZpbGw6I2YxYzk0Nzt9PC9zdHlsZT4KCTwvZGVmcz4KCTx0aXRsZT5zdGFyMTwvdGl0bGU+Cgk8ZyBpZD0iTGF5ZXJfMiIgZGF0YS1uYW1lPSJMYXllciAyIj4KCQk8ZyBpZD0iTGF5ZXJfMS0yIiBkYXRhLW5hbWU9IkxheWVyIDEiPgoJCQk8cG9seWdvbiBjbGFzcz0iY2xzLTEiIHBvaW50cz0iNTQuNCAwIDcxLjMgMzQuMSAxMDguOSAzOS42IDgxLjcgNjYuMSA4OC4xIDEwMy42IDU0LjQgODUuOSAyMC44IDEwMy42IDI3LjIgNjYuMSAwIDM5LjYgMzcuNiAzNC4xIDU0LjQgMCIvPgoJCTwvZz4KCTwvZz4KPC9zdmc+Cg==');\n  background-repeat: repeat-x;\n}\n"; (require("browserify-css").createStyle(css, { "href": "lib\\style.css" }, { "insertAt": "bottom" })); module.exports = css;
+var css = ".star-rating {\n  width: 0;\n  position: relative;\n  display: inline-block;\n  background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDguOSIgaGVpZ2h0PSIxMDMuNiIgdmlld0JveD0iMCAwIDEwOC45IDEwMy42Ij48ZGVmcz48c3R5bGU+LmNscy0xe2ZpbGw6I2UzZTZlNjt9PC9zdHlsZT48L2RlZnM+PHRpdGxlPnN0YXJfMDwvdGl0bGU+PGcgaWQ9IkxheWVyXzIiIGRhdGEtbmFtZT0iTGF5ZXIgMiI+PGcgaWQ9IkxheWVyXzEtMiIgZGF0YS1uYW1lPSJMYXllciAxIj48cG9seWdvbiBjbGFzcz0iY2xzLTEiIHBvaW50cz0iMTA4LjkgMzkuNiA3MS4zIDM0LjEgNTQuNCAwIDM3LjYgMzQuMSAwIDM5LjYgMjcuMiA2Ni4xIDIwLjggMTAzLjYgNTQuNCA4NS45IDg4LjEgMTAzLjYgODEuNyA2Ni4xIDEwOC45IDM5LjYiLz48L2c+PC9nPjwvc3ZnPg0K);\n  background-position: 0 0;\n  background-repeat: repeat-x;\n  cursor: pointer;\n}\n.star-rating .star-value {\n  height: 100%;\n  position: absolute;\n}\n.star-rating .star-value {\n  position: absolute;\n  height: 100%;\n  width: 100%;\n  background: url('data:image/svg+xml;base64,PHN2Zw0KCXhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwOC45IiBoZWlnaHQ9IjEwMy42IiB2aWV3Qm94PSIwIDAgMTA4LjkgMTAzLjYiPg0KCTxkZWZzPg0KCQk8c3R5bGU+LmNscy0xe2ZpbGw6I2YxYzk0Nzt9PC9zdHlsZT4NCgk8L2RlZnM+DQoJPHRpdGxlPnN0YXIxPC90aXRsZT4NCgk8ZyBpZD0iTGF5ZXJfMiIgZGF0YS1uYW1lPSJMYXllciAyIj4NCgkJPGcgaWQ9IkxheWVyXzEtMiIgZGF0YS1uYW1lPSJMYXllciAxIj4NCgkJCTxwb2x5Z29uIGNsYXNzPSJjbHMtMSIgcG9pbnRzPSI1NC40IDAgNzEuMyAzNC4xIDEwOC45IDM5LjYgODEuNyA2Ni4xIDg4LjEgMTAzLjYgNTQuNCA4NS45IDIwLjggMTAzLjYgMjcuMiA2Ni4xIDAgMzkuNiAzNy42IDM0LjEgNTQuNCAwIi8+DQoJCTwvZz4NCgk8L2c+DQo8L3N2Zz4NCg==');\n  background-repeat: repeat-x;\n}\n"; (require("browserify-css").createStyle(css, { "href": "lib\\style.css" }, { "insertAt": "bottom" })); module.exports = css;
 },{"browserify-css":3}],3:[function(require,module,exports){
 'use strict';
 // For more information about browser field, check out the browser field at https://github.com/substack/browserify-handbook#browser-field.
