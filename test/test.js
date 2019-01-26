@@ -173,4 +173,14 @@ describe('RaterJs', function() {
             let rater = raterJs({ element:element, step:0.999 });
         });
     });
+
+
+    it('element should return original element', function() {
+        const dom = new JSDOM(`<!DOCTYPE html><div id="rater">test</div>`);
+        const element = dom.window.document.querySelector("#rater");
+        global.document = dom.window.document;
+        let rater = raterJs({ element:element });
+
+        assert.equal(rater.element,element);
+    });
 });

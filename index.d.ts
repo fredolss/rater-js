@@ -18,6 +18,7 @@ interface Rater {
     setRating:(rating) => void; 
     getRating:() => number;
     clear:() => void;
+    element:HTMLElement;
 }
 
 declare module "rater-js" {
