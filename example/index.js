@@ -61,6 +61,16 @@ function onload(event) {
 		element:document.querySelector("#rater3")
 	}); 
 
+	var starRating3 = raterJs( {
+		max:6, 
+		dir:"rtl",
+		element:document.querySelector("#rater7"),
+		rateCallback:function rateCallback(rating, done) {
+			this.setRating(rating); 
+			done(); 
+		}
+	}); 
+
 	var starRating5 = raterJs( {
 		element:document.querySelector("#rater5"), 
 		rateCallback:function rateCallback(rating, done) {
