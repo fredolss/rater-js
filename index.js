@@ -302,6 +302,7 @@ module.exports = function (options) {
   function handleEnd(evt) {
     evt.preventDefault();
     onMove(evt.changedTouches[0].pageX - evt.changedTouches[0].target.offsetLeft);
+    onStarClick.apply(onStarClick, module);
   }
   /**
    * Handles touchend event.
