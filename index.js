@@ -23,7 +23,7 @@ module.exports = function (options) {
   }
 
   var elem = options.element;
-  var dirText = options.dir;
+  var reverse = options.reverse;
   var stars = options.max || 5;
   var starSize = options.starSize || 16;
   var step = options.step || 1;
@@ -35,7 +35,7 @@ module.exports = function (options) {
   var div = document.createElement("div");
   div.classList.add("star-value");
 
-  if (dirText === "rtl") {
+  if (reverse) {
     div.classList.add("rtl");
   }
 
@@ -101,7 +101,7 @@ module.exports = function (options) {
     var percent;
     var width = elem.offsetWidth;
 
-    if (dirText === 'rtl') {
+    if (reverse) {
       var parentOffset = elem.getBoundingClientRect();
       xCoor = e.pageX - parentOffset.left;
       var relXRtl = width - xCoor;

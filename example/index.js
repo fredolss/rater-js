@@ -63,7 +63,7 @@ function onload(event) {
 
 	var starRating3 = raterJs( {
 		max:6, 
-		dir:"rtl",
+		reverse:true,
 		element:document.querySelector("#rater7"),
 		rateCallback:function rateCallback(rating, done) {
 			this.setRating(rating); 

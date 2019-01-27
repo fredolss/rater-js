@@ -15,6 +15,8 @@ Rater Js
 * Unlimited number of stars.
 * Svg as background image makes it look good in any size.
 * Custom css. Use your own image as star.
+* RTL support.
+* Touch support.
 
 [**Try Rater JS  Demo →**][RaterJS]
 
@@ -93,13 +95,14 @@ Css will be injected at runtime, but you can override the css to get the look yo
 | element       | HtmlElement. Required.   |
 | rateCallback  | Function. Triggered when star i clicked.               | 
 | max           | Number. Number of stars to show.      |
-| showToolTip   | true/false. Will show or not show tooltip when hover the stars.            |
+| showToolTip   | true/false. If set to true, show tooltip when hover the stars.            |
 | starSize      | Number. Width and height of the star image.      |
 | disableText   | Text to show when disabled.   |
 | ratingText    | Text to show when hover over stars. Text {rating} {maxRating}.   |
-| isBusyText    | displayed while user is rating but done not called yet.  |
-| readOnly      | true/false. Will disable the rater.  |
+| isBusyText    | Displayed while user is rating but done not called yet.  |
+| readOnly      | true/false. If set to true, will disable the rater.  |
 | step          | Number. Set a precision between 0 and 1 for the rating.  |
+| reverse       | true/false. If set to true, the ratings will be reversed. |
 
 ## Methods/Properties
 

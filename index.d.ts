@@ -9,6 +9,7 @@ interface RaterOptions {
     starSize?:number;
     step?:number;
     readOnly?:boolean;
+    reverse?:boolean;
 }
 
 interface Rater {
