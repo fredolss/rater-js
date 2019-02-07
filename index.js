@@ -103,7 +103,13 @@ module.exports = function (options) {
 
     if (reverse) {
       var parentOffset = elem.getBoundingClientRect();
-      xCoor = e.pageX - parentOffset.left;
+
+      if (isTouch) {
+        xCoor = e.changedTouches[0].pageX - parentOffset.left;
+      } else {
+        xCoor = e.pageX - parentOffset.left;
+      }
+
       var relXRtl = width - xCoor;
       var valueForDivision = width / 100;
       percent = relXRtl / valueForDivision;
