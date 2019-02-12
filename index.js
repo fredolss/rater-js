@@ -135,6 +135,11 @@ module.exports = function (options) {
             break;
           }
         }
+      } //todo: check why this happens and fix
+
+
+      if (currentRating > stars) {
+        currentRating = stars;
       }
 
       elem.querySelector(".star-value").style.width = currentRating / stars * 100 + "%";
