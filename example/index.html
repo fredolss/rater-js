@@ -165,6 +165,20 @@
 
 <h2>Right to left support</h2>
 
+<pre>
+    <code>
+       {
+            max:6, 
+            reverse:true, //this enable rtl
+            element:document.querySelector("#rater7"),
+            rateCallback:function rateCallback(rating, done) {
+                this.setRating(rating); 
+                done(); 
+            }
+       )
+    </code>
+</pre>
+
 <div dir="rtl">
     <span id="rater7"></span>
 </div>
