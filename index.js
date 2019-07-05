@@ -86,11 +86,24 @@ module.exports = function (options) {
   function onMouseMove(e) {
     onMove(e, false);
   }
+
+  function getOffsetLeft(elem) {
+    var offsetLeft = 0;
+
+    do {
+      if (!isNaN(elem.offsetLeft)) {
+        offsetLeft += elem.offsetLeft;
+      }
+    } while (elem = elem.offsetParent);
+
+    return offsetLeft;
+  }
+
+  ;
   /**
    * Called by eventhandlers when mouse or touch events are triggered
    * @param {MouseEvent} e
    */
-
 
   function onMove(e, isTouch) {
     if (disabled === true || isRating === true) {
@@ -115,7 +128,7 @@ module.exports = function (options) {
       percent = relXRtl / valueForDivision;
     } else {
       if (isTouch) {
-        xCoor = e.changedTouches[0].pageX - e.changedTouches[0].target.offsetLeft;
+        xCoor = e.changedTouches[0].pageX - getOffsetLeft(e.changedTouches[0].target);
       } else {
         xCoor = e.offsetX;
       }
