@@ -1,7 +1,7 @@
 Rater Js
 ========
 
-*The author is looking for consulting work implementing anything with my open source libraries or other stuff. Please contact the me if you need help with implementation. I do javascript/php/wordpress/c#/asp.net. I have over 10 years experience with software development. Keep in mind that I only work remotely.*
+*The author is looking for consulting work implementing anything with his open source libraries or other stuff. Please contact the me if you need help with implementation. I do javascript/php/wordpress/c#/asp.net. I have over 10 years experience with software development. Keep in mind that I only work remotely.*
 
 ![rater-js Logo](ratings.png)
 [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://paypal.me/folssondev)
