@@ -100,14 +100,13 @@ module.exports = function (options) {
     var xCoor = null;
     var percent;
     var width = elem.offsetWidth;
+    var parentOffset = elem.getBoundingClientRect();
 
     if (reverse) {
-      var parentOffset = elem.getBoundingClientRect();
-
       if (isTouch) {
         xCoor = e.changedTouches[0].pageX - parentOffset.left;
       } else {
-        xCoor = e.pageX - parentOffset.left;
+        xCoor = e.pageX - window.scrollX - parentOffset.left;
       }
 
       var relXRtl = width - xCoor;
@@ -115,7 +114,7 @@ module.exports = function (options) {
       percent = relXRtl / valueForDivision;
     } else {
       if (isTouch) {
-        xCoor = e.changedTouches[0].pageX - e.changedTouches[0].target.offsetLeft;
+        xCoor = e.changedTouches[0].pageX - parentOffset.left;
       } else {
         xCoor = e.offsetX;
       }
