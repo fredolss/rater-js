@@ -8,6 +8,14 @@
     cursor: pointer;
 }
 
+.star-rating.vertical {
+    background-repeat: repeat-y;
+}
+
+.star-rating.vertical .star-value {
+    background-repeat: repeat-y;
+}
+
 .star-rating .star-value {
     position: absolute;
     height: 100%;

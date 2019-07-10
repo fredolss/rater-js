@@ -10,6 +10,7 @@ interface RaterOptions {
     step?:number;
     readOnly?:boolean;
     reverse?:boolean;
+    orientation?:string;
 }
 
 interface Rater {

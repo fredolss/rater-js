@@ -4,6 +4,9 @@
 /*! rater-js. [c] 2018 Fredrik Olsson. MIT License */
 var css = require('./style.css');
 
+var starValueClass = ".star-value";
+var horizontalOrientation = "horizontal";
+
 module.exports = function (options) {
   //private fields
   var showToolTip = true;
@@ -29,21 +32,44 @@ module.exports = function (options) {
   var step = options.step || 1;
   var onHover = options.onHover;
   var onLeave = options.onLeave;
+  options.orientation = "vertical";
+  var orientation = options.orientation || horizontalOrientation;
   var rating = null;
   var myRating;
   elem.classList.add("star-rating");
   var div = document.createElement("div");
   div.classList.add("star-value");
 
+  if (orientation === "vertical") {
+    elem.classList.add("vertical");
+  }
+
   if (reverse) {
     div.classList.add("rtl");
   }
 
-  div.style.backgroundSize = starSize + "px";
+  if (orientation === horizontalOrientation) {
+    div.style.backgroundSize = starSize + "px";
+  } else {
+    div.style.backgroundSize = starSize + "px " + starSize + "px";
+  }
+
   elem.appendChild(div);
-  elem.style.width = starSize * stars + "px";
-  elem.style.height = starSize + "px";
-  elem.style.backgroundSize = starSize + "px";
+
+  if (orientation === horizontalOrientation) {
+    elem.style.width = starSize * stars + "px";
+    elem.style.height = starSize + "px";
+  } else {
+    elem.style.height = starSize * stars + "px";
+    elem.style.width = starSize + "px";
+  }
+
+  if (orientation === horizontalOrientation) {
+    elem.style.backgroundSize = starSize + "px";
+  } else {
+    elem.style.backgroundSize = starSize + "px " + starSize + "px";
+  }
+
   var callback = options.rateCallback;
   var disabled = !!options.readOnly;
   var disableText;
@@ -75,7 +101,7 @@ module.exports = function (options) {
   }
 
   if (!rating) {
-    elem.querySelector(".star-value").style.width = "0px";
+    setWidthOrHeight("0px");
   }
 
   if (disabled) {
@@ -99,10 +125,17 @@ module.exports = function (options) {
 
     var xCoor = null;
     var percent;
-    var width = elem.offsetWidth;
+    var width;
+
+    if (orientation === horizontalOrientation) {
+      width = elem.offsetWidth;
+    } else {
+      width = elem.offsetHeight;
+    }
+
     var parentOffset = elem.getBoundingClientRect();
 
-    if (reverse) {
+    if (reverse && orientation === horizontalOrientation) {
       if (isTouch) {
         xCoor = e.changedTouches[0].pageX - parentOffset.left;
       } else {
@@ -114,9 +147,17 @@ module.exports = function (options) {
       percent = relXRtl / valueForDivision;
     } else {
       if (isTouch) {
-        xCoor = e.changedTouches[0].pageX - parentOffset.left;
+        if (orientation === horizontalOrientation) {
+          xCoor = e.changedTouches[0].pageX - parentOffset.left;
+        } else {
+          xCoor = e.changedTouches[0].pageY - parentOffset.top;
+        }
       } else {
-        xCoor = e.offsetX;
+        if (orientation === horizontalOrientation) {
+          xCoor = e.offsetX;
+        } else {
+          xCoor = e.offsetY;
+        }
       }
 
       percent = xCoor / width * 100;
@@ -141,7 +182,7 @@ module.exports = function (options) {
         currentRating = stars;
       }
 
-      elem.querySelector(".star-value").style.width = currentRating / stars * 100 + "%";
+      setWidthOrHeight(currentRating / stars * 100 + "%");
 
       if (showToolTip) {
         var toolTip = ratingText.replace("{rating}", currentRating);
@@ -162,10 +203,10 @@ module.exports = function (options) {
 
   function onStarOut(e) {
     if (!rating) {
-      elem.querySelector(".star-value").style.width = "0%";
+      setWidthOrHeight("0%");
       elem.removeAttribute("data-rating");
     } else {
-      elem.querySelector(".star-value").style.width = rating / stars * 100 + "%";
+      setWidthOrHeight(rating / stars * 100 + "%");
       elem.setAttribute("data-rating", rating);
     }
 
@@ -259,8 +300,16 @@ module.exports = function (options) {
     }
 
     rating = value;
-    elem.querySelector(".star-value").style.width = value / stars * 100 + "%";
+    setWidthOrHeight(value / stars * 100 + "%");
     elem.setAttribute("data-rating", value);
+  }
+
+  function setWidthOrHeight(widthOrHeight) {
+    if (orientation === horizontalOrientation) {
+      elem.querySelector(starValueClass).style.width = widthOrHeight;
+    } else {
+      elem.querySelector(starValueClass).style.height = widthOrHeight;
+    }
   }
   /**
    * Gets the rating
@@ -277,7 +326,7 @@ module.exports = function (options) {
 
   function clear() {
     rating = null;
-    elem.querySelector(".star-value").style.width = "0px";
+    setWidthOrHeight("0px");
     elem.removeAttribute("title");
   }
   /**
@@ -360,7 +409,7 @@ module.exports = function (options) {
 };
 
 },{"./style.css":2}],2:[function(require,module,exports){
-var css = ".star-rating {\n  width: 0;\n  position: relative;\n  display: inline-block;\n  background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDguOSIgaGVpZ2h0PSIxMDMuNiIgdmlld0JveD0iMCAwIDEwOC45IDEwMy42Ij48ZGVmcz48c3R5bGU+LmNscy0xe2ZpbGw6I2UzZTZlNjt9PC9zdHlsZT48L2RlZnM+PHRpdGxlPnN0YXJfMDwvdGl0bGU+PGcgaWQ9IkxheWVyXzIiIGRhdGEtbmFtZT0iTGF5ZXIgMiI+PGcgaWQ9IkxheWVyXzEtMiIgZGF0YS1uYW1lPSJMYXllciAxIj48cG9seWdvbiBjbGFzcz0iY2xzLTEiIHBvaW50cz0iMTA4LjkgMzkuNiA3MS4zIDM0LjEgNTQuNCAwIDM3LjYgMzQuMSAwIDM5LjYgMjcuMiA2Ni4xIDIwLjggMTAzLjYgNTQuNCA4NS45IDg4LjEgMTAzLjYgODEuNyA2Ni4xIDEwOC45IDM5LjYiLz48L2c+PC9nPjwvc3ZnPg0K);\n  background-position: 0 0;\n  background-repeat: repeat-x;\n  cursor: pointer;\n}\n.star-rating .star-value {\n  position: absolute;\n  height: 100%;\n  width: 100%;\n  background: url('data:image/svg+xml;base64,PHN2Zw0KCXhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwOC45IiBoZWlnaHQ9IjEwMy42IiB2aWV3Qm94PSIwIDAgMTA4LjkgMTAzLjYiPg0KCTxkZWZzPg0KCQk8c3R5bGU+LmNscy0xe2ZpbGw6I2YxYzk0Nzt9PC9zdHlsZT4NCgk8L2RlZnM+DQoJPHRpdGxlPnN0YXIxPC90aXRsZT4NCgk8ZyBpZD0iTGF5ZXJfMiIgZGF0YS1uYW1lPSJMYXllciAyIj4NCgkJPGcgaWQ9IkxheWVyXzEtMiIgZGF0YS1uYW1lPSJMYXllciAxIj4NCgkJCTxwb2x5Z29uIGNsYXNzPSJjbHMtMSIgcG9pbnRzPSI1NC40IDAgNzEuMyAzNC4xIDEwOC45IDM5LjYgODEuNyA2Ni4xIDg4LjEgMTAzLjYgNTQuNCA4NS45IDIwLjggMTAzLjYgMjcuMiA2Ni4xIDAgMzkuNiAzNy42IDM0LjEgNTQuNCAwIi8+DQoJCTwvZz4NCgk8L2c+DQo8L3N2Zz4NCg==');\n  background-repeat: repeat-x;\n}\n.star-rating.disabled {\n  cursor: default;\n}\n.star-rating.is-busy {\n  cursor: wait;\n}\n.star-rating .star-value.rtl {\n  -moz-transform: scaleX(-1);\n  -o-transform: scaleX(-1);\n  -webkit-transform: scaleX(-1);\n  transform: scaleX(-1);\n  filter: FlipH;\n  -ms-filter: \"FlipH\";\n  right: 0;\n  left: auto;\n}\n"; (require("browserify-css").createStyle(css, { "href": "lib\\style.css" }, { "insertAt": "bottom" })); module.exports = css;
+var css = ".star-rating {\n  width: 0;\n  position: relative;\n  display: inline-block;\n  background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDguOSIgaGVpZ2h0PSIxMDMuNiIgdmlld0JveD0iMCAwIDEwOC45IDEwMy42Ij48ZGVmcz48c3R5bGU+LmNscy0xe2ZpbGw6I2UzZTZlNjt9PC9zdHlsZT48L2RlZnM+PHRpdGxlPnN0YXJfMDwvdGl0bGU+PGcgaWQ9IkxheWVyXzIiIGRhdGEtbmFtZT0iTGF5ZXIgMiI+PGcgaWQ9IkxheWVyXzEtMiIgZGF0YS1uYW1lPSJMYXllciAxIj48cG9seWdvbiBjbGFzcz0iY2xzLTEiIHBvaW50cz0iMTA4LjkgMzkuNiA3MS4zIDM0LjEgNTQuNCAwIDM3LjYgMzQuMSAwIDM5LjYgMjcuMiA2Ni4xIDIwLjggMTAzLjYgNTQuNCA4NS45IDg4LjEgMTAzLjYgODEuNyA2Ni4xIDEwOC45IDM5LjYiLz48L2c+PC9nPjwvc3ZnPg0K);\n  background-position: 0 0;\n  background-repeat: repeat-x;\n  cursor: pointer;\n}\n.star-rating.vertical {\n  background-repeat: repeat-y;\n}\n.star-rating.vertical .star-value {\n  background-repeat: repeat-y;\n}\n.star-rating .star-value {\n  position: absolute;\n  height: 100%;\n  width: 100%;\n  background: url('data:image/svg+xml;base64,PHN2Zw0KCXhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwOC45IiBoZWlnaHQ9IjEwMy42IiB2aWV3Qm94PSIwIDAgMTA4LjkgMTAzLjYiPg0KCTxkZWZzPg0KCQk8c3R5bGU+LmNscy0xe2ZpbGw6I2YxYzk0Nzt9PC9zdHlsZT4NCgk8L2RlZnM+DQoJPHRpdGxlPnN0YXIxPC90aXRsZT4NCgk8ZyBpZD0iTGF5ZXJfMiIgZGF0YS1uYW1lPSJMYXllciAyIj4NCgkJPGcgaWQ9IkxheWVyXzEtMiIgZGF0YS1uYW1lPSJMYXllciAxIj4NCgkJCTxwb2x5Z29uIGNsYXNzPSJjbHMtMSIgcG9pbnRzPSI1NC40IDAgNzEuMyAzNC4xIDEwOC45IDM5LjYgODEuNyA2Ni4xIDg4LjEgMTAzLjYgNTQuNCA4NS45IDIwLjggMTAzLjYgMjcuMiA2Ni4xIDAgMzkuNiAzNy42IDM0LjEgNTQuNCAwIi8+DQoJCTwvZz4NCgk8L2c+DQo8L3N2Zz4NCg==');\n  background-repeat: repeat-x;\n}\n.star-rating.disabled {\n  cursor: default;\n}\n.star-rating.is-busy {\n  cursor: wait;\n}\n.star-rating .star-value.rtl {\n  -moz-transform: scaleX(-1);\n  -o-transform: scaleX(-1);\n  -webkit-transform: scaleX(-1);\n  transform: scaleX(-1);\n  filter: FlipH;\n  -ms-filter: \"FlipH\";\n  right: 0;\n  left: auto;\n}\n"; (require("browserify-css").createStyle(css, { "href": "lib\\style.css" }, { "insertAt": "bottom" })); module.exports = css;
 },{"browserify-css":3}],3:[function(require,module,exports){
 'use strict';
 // For more information about browser field, check out the browser field at https://github.com/substack/browserify-handbook#browser-field.
