@@ -93,6 +93,15 @@ function onload(event) {
 		}
 	}); 
 
+	var starRating8 = raterJs( {
+		orientation:"vertical",
+		element:document.querySelector("#rater8"), 
+		rateCallback:function rateCallback(rating, done) {
+			this.setRating(rating); 
+			done(); 
+		}
+	}); 
+
 	
 document.querySelector('#rater6-button').addEventListener("click", function() {
 	starRating6.clear();

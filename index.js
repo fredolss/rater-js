@@ -6,7 +6,7 @@ var css = require('./style.css');
 
 var starValueClass = ".star-value";
 var horizontalOrientation = "horizontal";
-var verticalOrientation = "horizontal";
+var verticalOrientation = "vertical";
 
 module.exports = function (options) {
   //private fields
@@ -172,7 +172,7 @@ module.exports = function (options) {
         for (var i = 0;; i += step) {
           if (i >= rat) {
             currentRating = i;
-            br;
+            break;
           }
         }
       } //todo: check why this happens and fix
