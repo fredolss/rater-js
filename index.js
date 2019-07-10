@@ -6,6 +6,7 @@ var css = require('./style.css');
 
 var starValueClass = ".star-value";
 var horizontalOrientation = "horizontal";
+var verticalOrientation = "horizontal";
 
 module.exports = function (options) {
   //private fields
@@ -32,7 +33,6 @@ module.exports = function (options) {
   var step = options.step || 1;
   var onHover = options.onHover;
   var onLeave = options.onLeave;
-  options.orientation = "vertical";
   var orientation = options.orientation || horizontalOrientation;
   var rating = null;
   var myRating;
@@ -40,7 +40,7 @@ module.exports = function (options) {
   var div = document.createElement("div");
   div.classList.add("star-value");
 
-  if (orientation === "vertical") {
+  if (orientation === verticalOrientation) {
     elem.classList.add("vertical");
   }
 
@@ -172,7 +172,7 @@ module.exports = function (options) {
         for (var i = 0;; i += step) {
           if (i >= rat) {
             currentRating = i;
-            break;
+            br;
           }
         }
       } //todo: check why this happens and fix
