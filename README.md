@@ -10,8 +10,6 @@ Rater Js
 
 **rater-js** is a star rating widget for the browser.
 
-*The author is looking for consulting work implementing anything with his open source libraries or other stuff. I do javascript/php/wordpress/c#/asp.net. I have over 10 years experience with software development. Keep in mind that I only work remotely.*
-
 ### Main features:
 
 * Unlimited number of stars.
