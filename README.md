@@ -26,6 +26,18 @@ Rater Js
 npm install rater-js --save
 ```
 
+## Development
+
+Development and CI use Node.js 24. With nvm installed, select the configured
+version and run the build and test suite:
+
+```sh
+nvm use
+npm ci
+npm run build
+npm test
+```
+
 ## Usage
 
 **rater-js** can be used with amd, commonjs or without any module loader using global scope.

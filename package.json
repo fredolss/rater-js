@@ -10,7 +10,7 @@
   "types": "index.d.ts",
   "main": "index.js",
   "scripts": {
-    "build": "browserify -t [ browserify-css --inlineImages]  -t  [babelify --presets [ @babel/preset-env] ]  ./lib/rater-js -o index.js --standalone rater-js",
+    "build": "node scripts/build.mjs",
     "test": "mocha --require ignore-styles"
   },
   "keywords": [
@@ -31,14 +31,12 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "@babel/core": "^7.24.0",
-    "@babel/preset-env": "^7.24.0",
-    "babelify": "^10.0.0",
-    "browserify": "^17.0.0",
-    "browserify-css": "^0.15.0",
+    "@babel/core": "^8.0.1",
+    "@babel/preset-env": "^8.0.2",
+    "esbuild": "^0.28.2",
     "ignore-styles": "^5.0.1",
-    "jsdom": "^24.0.0",
-    "mocha": "^10.3.0",
-    "sinon": "^17.0.1"
+    "jsdom": "^30.0.1",
+    "mocha": "^12.0.0",
+    "sinon": "^22.1.0"
   }
 }
