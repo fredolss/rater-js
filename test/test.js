@@ -79,12 +79,76 @@ describe('RaterJs', function() {
         const element = dom.window.document.querySelector("#rater");
         global.document = dom.window.document;
 
-        let callbackSpy = sinon.spy();
+        let callbackContext;
+        let callbackSpy = sinon.spy(function(rating, done) {
+            callbackContext = this;
+            done();
+        });
         let rater = raterJs({ element:element, rating:3, rateCallback:callbackSpy });
         var evt = global.document.createEvent("HTMLEvents");
         evt.initEvent("click", false, true);
         element.dispatchEvent(evt);
         sinon.assert.calledOnce(callbackSpy);
+        assert.equal(callbackContext, rater);
+    });
+
+    it('should create independent raters for every matching element', function() {
+        const dom = new JSDOM(`<!DOCTYPE html>
+            <div class="rater" data-rating="2"></div>
+            <div class="rater" data-rating="4"></div>`);
+        global.document = dom.window.document;
+
+        const elements = Array.from(global.document.querySelectorAll(".rater"));
+        const raters = elements.map((element) => raterJs({ element:element }));
+
+        assert.equal(raters.length, 2);
+        assert.equal(elements[0].querySelectorAll(".star-value").length, 1);
+        assert.equal(elements[1].querySelectorAll(".star-value").length, 1);
+        assert.equal(raters[0].getRating(), 2);
+        assert.equal(raters[1].getRating(), 4);
+
+        raters[0].setRating(1);
+        assert.equal(raters[0].getRating(), 1);
+        assert.equal(raters[1].getRating(), 4);
+
+        raters[0].clear();
+        raters[0].disable();
+        assert.equal(raters[0].getRating(), null);
+        assert.equal(elements[0].classList.contains("disabled"), true);
+        assert.equal(elements[1].classList.contains("disabled"), false);
+    });
+
+    it('dispose should remove every listener from only its own element', function() {
+        const dom = new JSDOM(`<!DOCTYPE html>
+            <div id="first"></div>
+            <div id="second"></div>`);
+        global.document = dom.window.document;
+
+        const first = global.document.querySelector("#first");
+        const second = global.document.querySelector("#second");
+        const addListenerSpy = sinon.spy(first, "addEventListener");
+        const removeListenerSpy = sinon.spy(first, "removeEventListener");
+        const firstCallback = sinon.spy();
+        const secondCallback = sinon.spy();
+        const firstRater = raterJs({ element:first, rateCallback:firstCallback });
+        raterJs({ element:second, rateCallback:secondCallback });
+        const registeredListeners = new Map(addListenerSpy.getCalls().map((call) => [call.args[0], call.args[1]]));
+
+        firstRater.dispose();
+
+        ["mousemove", "mouseleave", "click", "touchmove", "touchstart", "touchend", "touchcancel"].forEach((eventName) => {
+            const removeCall = removeListenerSpy.getCalls().find((call) => call.args[0] === eventName);
+            assert.ok(removeCall, eventName + " listener should be removed");
+            assert.equal(removeCall.args[1], registeredListeners.get(eventName));
+        });
+
+        const click = global.document.createEvent("HTMLEvents");
+        click.initEvent("click", false, true);
+        first.dispatchEvent(click);
+        second.dispatchEvent(click);
+
+        sinon.assert.notCalled(firstCallback);
+        sinon.assert.calledOnce(secondCallback);
     });
 
     

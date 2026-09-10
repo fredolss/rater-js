@@ -20,6 +20,16 @@ function onload(event) {
 		}
 	}); 
 
+	var multipleRaters = Array.from(document.querySelectorAll(".multiple-rater")).map(function(element) {
+		return raterJs({
+			element:element,
+			rateCallback:function rateCallback(rating, done) {
+				this.setRating(rating);
+				done();
+			}
+		});
+	});
+
 	var starRatingStep = raterJs( {
 		starSize:32, 
 		step:0.5, 
@@ -101,4 +111,4 @@ document.querySelector('#rater6-button').addEventListener("click", function() {
 
 }
 
-window.addEventListener("load", onload, false); 
+window.addEventListener("load", onload, false);

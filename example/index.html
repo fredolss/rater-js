@@ -27,6 +27,27 @@
 
 <hr>
 
+<h2>Multiple raters sharing a class</h2>
+
+<div class="multiple-rater" data-rating="2"></div>
+<div class="multiple-rater" data-rating="4"></div>
+
+<pre>
+    <code>
+    var multipleRaters = Array.from(document.querySelectorAll(".multiple-rater")).map(function(element) {
+        return raterJs({
+            element:element,
+            rateCallback:function rateCallback(rating, done) {
+                this.setRating(rating);
+                done();
+            }
+        });
+    });
+    </code>
+</pre>
+
+<hr>
+
 <h2>5 star rater with step</h2>
 
 <div id="rater-step"></div>

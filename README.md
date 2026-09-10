@@ -85,6 +85,31 @@ Lastly we can use the widget like this:
 	}});
 ```
 
+### Multiple raters
+
+`raterJs` creates one independent rater for one element. To turn every element
+matching a selector into a rater, create one instance for each element:
+
+```html
+<div class="rater"></div>
+<div class="rater"></div>
+```
+
+```js
+var raters = Array.from(document.querySelectorAll(".rater")).map(function(element) {
+    return raterJs({
+        element: element,
+        rateCallback: function(rating, done) {
+            this.setRating(rating);
+            done();
+        }
+    });
+});
+```
+
+The returned array contains the individual instances, so each rater can be
+updated, disabled, cleared, or disposed independently.
+
 Css will be injected at runtime, but you can override the css to get the look you want.
 
 ```css

@@ -195,7 +195,7 @@ var raterJsBundle = function () {
               elem.setAttribute("title", isBusyText);
             }
             elem.classList.add("is-busy");
-            callback.call(this, myRating, function () {
+            callback.call(module2, myRating, function () {
               if (disabled === false) {
                 elem.removeAttribute("title");
               }
@@ -278,13 +278,13 @@ var raterJsBundle = function () {
         function handleEnd(evt) {
           evt.preventDefault();
           onMove(evt, true);
-          onStarClick.call(module2);
+          onStarClick();
         }
         function handleCancel(e) {
           e.preventDefault();
           onStarOut(e);
         }
-        elem.addEventListener("click", onStarClick.bind(module2));
+        elem.addEventListener("click", onStarClick);
         elem.addEventListener("touchmove", handleMove, false);
         elem.addEventListener("touchstart", handleStart, false);
         elem.addEventListener("touchend", handleEnd, false);
