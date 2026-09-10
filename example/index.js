@@ -30,6 +30,13 @@ function onload(event) {
 		});
 	});
 
+	var spacedRater = raterJs({
+		element:document.querySelector("#rater-spacing"),
+		starSize:32,
+		starSpacing:6,
+		rating:3.9
+	});
+
 	var starRatingStep = raterJs( {
 		starSize:32, 
 		step:0.5, 

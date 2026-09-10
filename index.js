@@ -62,10 +62,16 @@ var raterJsBundle = function () {
             throw new Error("step must be a number between 0 and 1");
           }
         }
+        if (typeof options.starSpacing !== "undefined") {
+          if (typeof options.starSpacing !== "number" || !isFinite(options.starSpacing) || options.starSpacing < 0) {
+            throw new Error("starSpacing must be a non-negative number");
+          }
+        }
         var elem = options.element;
         var reverse = options.reverse;
         var stars = options.max || 5;
         var starSize = options.starSize || 16;
+        var starSpacing = typeof options.starSpacing === "undefined" ? 2 : options.starSpacing;
         var step = options.step || 1;
         var onHover = options.onHover;
         var onLeave = options.onLeave;
@@ -77,11 +83,11 @@ var raterJsBundle = function () {
         if (reverse) {
           div.classList.add("rtl");
         }
-        div.style.backgroundSize = starSize + "px";
         elem.appendChild(div);
-        elem.style.width = starSize * stars + "px";
+        elem.style.width = starSize * stars + starSpacing * (stars - 1) + "px";
         elem.style.height = starSize + "px";
-        elem.style.backgroundSize = starSize + "px";
+        configureBackground(elem);
+        configureBackground(div);
         var callback = options.rateCallback;
         var disabled = !!options.readOnly;
         var disableText;
@@ -108,7 +114,7 @@ var raterJsBundle = function () {
           }
         }
         if (!rating) {
-          elem.querySelector(".star-value").style.width = "0px";
+          setValueWidth(0);
         }
         if (disabled) {
           disable();
@@ -121,42 +127,34 @@ var raterJsBundle = function () {
             return;
           }
           var xCoor = null;
-          var percent;
           var width = elem.offsetWidth;
           var parentOffset = elem.getBoundingClientRect();
-          if (reverse) {
-            if (isTouch) {
-              xCoor = e.changedTouches[0].pageX - parentOffset.left;
+          var view = elem.ownerDocument.defaultView;
+          if (isTouch) {
+            var touch = e.changedTouches[0];
+            if (typeof touch.clientX === "number") {
+              xCoor = touch.clientX - parentOffset.left;
             } else {
-              xCoor = e.pageX - window.scrollX - parentOffset.left;
+              xCoor = touch.pageX - (view ? view.pageXOffset : 0) - parentOffset.left;
             }
-            var relXRtl = width - xCoor;
-            var valueForDivision = width / 100;
-            percent = relXRtl / valueForDivision;
           } else {
-            if (isTouch) {
-              xCoor = e.changedTouches[0].pageX - parentOffset.left;
-            } else {
-              xCoor = e.offsetX;
-            }
-            percent = xCoor / width * 100;
+            xCoor = e.clientX - parentOffset.left;
           }
-          if (percent < 101) {
+          if (reverse) {
+            xCoor = width - xCoor;
+          }
+          var rawRating = coordinateToRating(xCoor, width);
+          if (rawRating <= stars) {
             if (step === 1) {
-              currentRating = Math.ceil(percent / 100 * stars);
+              currentRating = Math.ceil(rawRating);
             } else {
-              var rat = percent / 100 * stars;
-              for (var i = 0;; i += step) {
-                if (i >= rat) {
-                  currentRating = i;
-                  break;
-                }
-              }
+              currentRating = Math.ceil(rawRating / step) * step;
+              currentRating = Number(currentRating.toFixed(10));
             }
             if (currentRating > stars) {
               currentRating = stars;
             }
-            elem.querySelector(".star-value").style.width = currentRating / stars * 100 + "%";
+            setValueWidth(currentRating);
             if (showToolTip) {
               var toolTip = ratingText.replace("{rating}", currentRating);
               toolTip = toolTip.replace("{maxRating}", stars);
@@ -169,10 +167,10 @@ var raterJsBundle = function () {
         }
         function onStarOut(e) {
           if (!rating) {
-            elem.querySelector(".star-value").style.width = "0%";
+            setValueWidth(0);
             elem.removeAttribute("data-rating");
           } else {
-            elem.querySelector(".star-value").style.width = rating / stars * 100 + "%";
+            setValueWidth(rating);
             elem.setAttribute("data-rating", rating);
           }
           if (typeof onLeave === "function") {
@@ -234,7 +232,7 @@ var raterJsBundle = function () {
             throw new Error("Value too high. Please set a rating of " + stars + " or below.");
           }
           rating = value;
-          elem.querySelector(".star-value").style.width = value / stars * 100 + "%";
+          setValueWidth(value);
           elem.setAttribute("data-rating", value);
         }
         function getRating() {
@@ -242,8 +240,51 @@ var raterJsBundle = function () {
         }
         function clear() {
           rating = null;
-          elem.querySelector(".star-value").style.width = "0px";
+          setValueWidth(0);
           elem.removeAttribute("title");
+        }
+        function configureBackground(target) {
+          target.style.backgroundSize = starSize + "px";
+          if (starSpacing === 0) {
+            return;
+          }
+          var view = elem.ownerDocument.defaultView;
+          var computedStyle = view && view.getComputedStyle ? view.getComputedStyle(target) : null;
+          var backgroundImage = computedStyle && computedStyle.backgroundImage ? computedStyle.backgroundImage : "none";
+          var images = [];
+          var positions = [];
+          for (var i = 0; i < stars; i++) {
+            images.push(backgroundImage);
+            positions.push(i * (starSize + starSpacing) + "px 0px");
+          }
+          target.style.setProperty("background-image", images.join(", "), "important");
+          target.style.setProperty("background-position", positions.join(", "), "important");
+          target.style.setProperty("background-repeat", "no-repeat", "important");
+          target.style.setProperty("background-size", starSize + "px", "important");
+        }
+        function setValueWidth(value) {
+          if (starSpacing === 0) {
+            div.style.width = value / stars * 100 + "%";
+            return;
+          }
+          var width = value === 0 ? 0 : value * starSize + (Math.ceil(value) - 1) * starSpacing;
+          div.style.width = width + "px";
+        }
+        function coordinateToRating(xCoor, width) {
+          if (starSpacing === 0) {
+            return xCoor / width * stars;
+          }
+          if (xCoor <= 0) {
+            return 0;
+          }
+          if (xCoor >= width) {
+            return stars;
+          }
+          var slotSize = starSize + starSpacing;
+          var completeStars = Math.floor(xCoor / slotSize);
+          var positionInSlot = xCoor - completeStars * slotSize;
+          var partialStar = Math.min(positionInSlot / starSize, 1);
+          return Math.min(completeStars + partialStar, stars);
         }
         function dispose() {
           elem.removeEventListener("mousemove", onMouseMove);

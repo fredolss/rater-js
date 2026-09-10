@@ -110,6 +110,20 @@ var raters = Array.from(document.querySelectorAll(".rater")).map(function(elemen
 The returned array contains the individual instances, so each rater can be
 updated, disabled, cleared, or disposed independently.
 
+### Spacing between stars
+
+Stars have a 2px gap by default. Use `starSpacing` to customize the gap in
+pixels, or set it to `0` to use the previous layout without additional spacing
+between the star image boxes:
+
+```js
+var spacedRater = raterJs({
+    element: document.querySelector("#rater"),
+    starSize: 32,
+    starSpacing: 6
+});
+```
+
 Css will be injected at runtime, but you can override the css to get the look you want.
 
 ```css
@@ -134,6 +148,7 @@ Css will be injected at runtime, but you can override the css to get the look yo
 | max           | Number. Number of stars to show.      |
 | showToolTip   | true/false. If set to true, show tooltip when hover the stars.            |
 | starSize      | Number. Width and height of the star image.      |
+| starSpacing   | Number. Additional space between star image boxes in pixels. Defaults to 2. Use 0 for no additional spacing.      |
 | disableText   | Text to show when disabled.   |
 | ratingText    | Text to show when hover over stars. Text {rating} {maxRating}.   |
 | isBusyText    | Displayed while user is rating but done not called yet.  |
