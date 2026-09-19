@@ -14,9 +14,13 @@
     "index.js",
     "index.d.ts"
   ],
+  "engines": {
+    "node": ">=22.22.2"
+  },
   "scripts": {
     "build": "node scripts/build.mjs",
-    "test": "mocha --require ignore-styles"
+    "test": "mocha --require ignore-styles",
+    "prepublishOnly": "npm run build && npm test"
   },
   "keywords": [
     "star",
