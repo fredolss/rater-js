@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 200 200" width="200" height="200">
+  <defs>
+    <linearGradient id="badgeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4F46E5"/>
+      <stop offset="100%" stop-color="#7C3AED"/>
+    </linearGradient>
+    <linearGradient id="starFill" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#FDE047"/>
+      <stop offset="100%" stop-color="#F59E0B"/>
+    </linearGradient>
+    <clipPath id="halfClipBig">
+      <rect x="-90" y="-90" width="90" height="180"/>
+    </clipPath>
+
+    <!-- Big star (outer r=90) -->
+    <path id="starBig" d="M0 -74 L26 -8 L98 -8 L40 32 L58 96 L0 58 L-58 96 L-40 32 L-98 -8 L-26 -8 Z"/>
+  </defs>
+
+  <g transform="translate(100,100)">
+    <rect x="-100" y="-100" width="200" height="200" rx="44" fill="url(#badgeGrad)"/>
+    <rect x="-92" y="-92" width="184" height="184" rx="38" fill="none" stroke="#ffffff" stroke-opacity="0.10" stroke-width="3"/>
+    <g transform="translate(0,-6)">
+      <use xlink:href="#starBig" href="#starBig" fill="none" stroke="#ffffff" stroke-opacity="0.85" stroke-width="7" stroke-linejoin="round" stroke-linecap="round"/>
+      <use xlink:href="#starBig" href="#starBig" fill="url(#starFill)" clip-path="url(#halfClipBig)"/>
+      <use xlink:href="#starBig" href="#starBig" fill="none" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+    </g>
+  </g>
+</svg>
