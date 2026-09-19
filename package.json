@@ -4,11 +4,16 @@
   "version": "1.0.1",
   "repository": {
     "type": "git",
-    "url": "git://github.com/fredolss/rater-js.git"
+    "url": "git+https://github.com/fredolss/rater-js.git"
   },
+  "bugs": "https://github.com/fredolss/rater-js/issues",
   "homepage": "https://fredolss.github.io/rater-js",
   "types": "index.d.ts",
   "main": "index.js",
+  "files": [
+    "index.js",
+    "index.d.ts"
+  ],
   "scripts": {
     "build": "node scripts/build.mjs",
     "test": "mocha --require ignore-styles"
