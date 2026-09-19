@@ -277,12 +277,6 @@ star the project, or to raise issues. You can also support this project by
 
 Thanks again for your support, it is much appreciated! 🙏
 
-## Commercial support
-
-Commercial support is available for custom functionality, integrations,
-accessibility improvements, and priority support. Contact the maintainer at
-[fredrik.olsson2@outlook.com](mailto:fredrik.olsson2@outlook.com).
-
 ## Development
 
 Development and CI use Node.js 24. With nvm installed, select the configured
@@ -294,6 +288,14 @@ npm ci
 npm run build
 npm test
 ```
+
+### Releasing
+
+1. `npm version patch|minor|major` (bumps package.json, commits, tags locally)
+2. `git push && git push --tags`
+3. Create a GitHub Release from the new tag (GitHub UI, or `gh release create vX.Y.Z --generate-notes`)
+
+Publishing to npm happens automatically via [.github/workflows/release.yml](.github/workflows/release.yml) once the Release is published.
 
 ## License
 

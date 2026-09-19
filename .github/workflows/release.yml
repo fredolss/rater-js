@@ -1,0 +1,41 @@
+name: Publish to npm
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24.x
+          cache: npm
+          registry-url: 'https://registry.npmjs.org'
+
+      - run: npm ci
+      - run: npm run build
+      - run: npm test
+
+      - name: Verify package.json version matches release tag
+        run: |
+          TAG="${GITHUB_REF_NAME#v}"
+          PKG_VERSION=$(node -p "require('./package.json').version")
+          if [ "$TAG" != "$PKG_VERSION" ]; then
+            echo "::error::Release tag ($GITHUB_REF_NAME) does not match package.json version ($PKG_VERSION)"
+            exit 1
+          fi
+
+      # Trusted Publishing (OIDC) requires npm CLI 11.5.1+; Node 24's bundled
+      # npm may be older, so upgrade explicitly before publishing.
+      - run: npm install -g npm@latest
+
+      - name: Publish to npm
+        run: npm publish --provenance
