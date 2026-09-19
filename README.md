@@ -275,6 +275,9 @@ star the project, or to raise issues. You can also support this project by
 [becoming a sponsor on GitHub][sponsor-url] or by making a
 [PayPal donation][donate-url] to ensure this journey continues indefinitely!
 
+See [CONTRIBUTING.md](CONTRIBUTING.md) for how to set up a dev environment
+and submit a pull request.
+
 Thanks again for your support, it is much appreciated! 🙏
 
 ## Development
