@@ -22,6 +22,7 @@ right-to-left layouts.
 - Right-to-left support
 - Read-only ratings
 - Custom star size, spacing, images, and text
+- ES module imports with modern bundlers
 - CommonJS, AMD, and browser-global usage
 - TypeScript declarations included
 
@@ -44,11 +45,11 @@ Add an element that will contain the rating widget:
 Create a rater for that element:
 
 ```js
-var raterJs = require("rater-js");
+import raterJs from "rater-js";
 
-var rater = raterJs({
+const rater = raterJs({
     element: document.querySelector("#rater"),
-    rateCallback: function(rating, done) {
+    rateCallback(rating, done) {
         this.setRating(rating);
         done();
     }
@@ -62,10 +63,28 @@ rater instance.
 
 ## Loading rater-js
 
+### ES modules and bundlers (recommended)
+
+Use a default import in modern applications built with tools such as Vite,
+webpack, Parcel, or esbuild:
+
+```js
+import raterJs from "rater-js";
+
+const rater = raterJs({
+    element: document.querySelector("#rater")
+});
+```
+
+`rater-js` is currently distributed as a CommonJS/UMD package. Modern bundlers
+and Node.js ES modules provide the default-import interoperability used above.
+The package is not a native browser ES module, so a bare import from
+`"rater-js"` requires a bundler or another package-resolution layer.
+
 ### CommonJS
 
 ```js
-var raterJs = require("rater-js");
+const raterJs = require("rater-js");
 ```
 
 ### Browser global
@@ -79,16 +98,16 @@ Load the distribution bundle before the closing `body` tag:
 The factory is then available as `window.raterJs`:
 
 ```js
-var rater = raterJs({
+const rater = raterJs({
     element: document.querySelector("#rater")
 });
 ```
 
-### AMD
+### AMD loaders
 
 ```js
 define(["rater-js"], function(raterJs) {
-    var rater = raterJs({
+    const rater = raterJs({
         element: document.querySelector("#rater")
     });
 });
@@ -101,7 +120,7 @@ define(["rater-js"], function(raterJs) {
 Set the initial value with the `rating` option:
 
 ```js
-var rater = raterJs({
+const rater = raterJs({
     element: document.querySelector("#rater"),
     rating: 3.5
 });
@@ -114,7 +133,7 @@ You can also provide the initial value through a `data-rating` attribute:
 ```
 
 ```js
-var rater = raterJs({
+const rater = raterJs({
     element: document.querySelector("#rater")
 });
 ```
@@ -130,15 +149,15 @@ instance for every matching element when a page contains multiple ratings:
 ```
 
 ```js
-var raters = Array.from(document.querySelectorAll(".rater")).map(function(element) {
-    return raterJs({
-        element: element,
-        rateCallback: function(rating, done) {
+const raters = [...document.querySelectorAll(".rater")].map((element) =>
+    raterJs({
+        element,
+        rateCallback(rating, done) {
             this.setRating(rating);
             done();
         }
-    });
-});
+    })
+);
 ```
 
 The returned array contains the individual instances, so each rater can be
@@ -150,7 +169,7 @@ Use `step` to control the selectable precision. It must be greater than `0` and
 no greater than `1`:
 
 ```js
-var rater = raterJs({
+const rater = raterJs({
     element: document.querySelector("#rater"),
     rating: 3.5,
     step: 0.5
@@ -163,7 +182,7 @@ Stars have a 2-pixel gap by default. Set `starSpacing` to a non-negative number,
 or use `0` for the original layout without gaps:
 
 ```js
-var rater = raterJs({
+const rater = raterJs({
     element: document.querySelector("#rater"),
     starSize: 32,
     starSpacing: 6
@@ -173,7 +192,7 @@ var rater = raterJs({
 ### Read-only ratings
 
 ```js
-var rater = raterJs({
+const rater = raterJs({
     element: document.querySelector("#rater"),
     rating: 4.4,
     readOnly: true
@@ -191,7 +210,7 @@ Set `reverse` to `true` to reverse the rating direction:
 ```
 
 ```js
-var rater = raterJs({
+const rater = raterJs({
     element: document.querySelector("#rater"),
     reverse: true
 });
@@ -207,12 +226,12 @@ Use `onHover` and `onLeave` to display the value currently under the pointer:
 ```
 
 ```js
-var rater = raterJs({
+const rater = raterJs({
     element: document.querySelector("#rater"),
-    onHover: function(currentRating, selectedRating) {
+    onHover: (currentRating, selectedRating) => {
         document.querySelector("#live-rating").textContent = currentRating;
     },
-    onLeave: function(currentRating, selectedRating) {
+    onLeave: (currentRating, selectedRating) => {
         document.querySelector("#live-rating").textContent = selectedRating || "";
     }
 });
