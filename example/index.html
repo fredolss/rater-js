@@ -1,5 +1,3 @@
----
----
 <!DOCTYPE html>
 <html lang="en" >
 <head>
@@ -225,7 +223,10 @@
     <span id="rater7"></span>
 </div>
 
-<script src="../index.js?v={{ site.github.build_revision }}"></script>
-<script src="index.js?v={{ site.github.build_revision }}"></script>
+<script>
+    var raterJsCacheBust = Date.now();
+    document.write('<script src="../index.js?v=' + raterJsCacheBust + '"><\/script>');
+    document.write('<script src="index.js?v=' + raterJsCacheBust + '"><\/script>');
+</script>
 </body>
 </html>
