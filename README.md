@@ -5,6 +5,8 @@
 [![License][license-image]][license-url]
 [![Downloads][downloads-image]][downloads-url]
 [![Node.js CI](https://github.com/fredolss/rater-js/actions/workflows/node.js.yml/badge.svg?branch=master)](https://github.com/fredolss/rater-js/actions/workflows/node.js.yml)
+[![Sponsor][sponsor-image]][sponsor-url]
+[![Donate][donate-image]][donate-url]
 
 # rater-js
 
@@ -266,10 +268,14 @@ at a size other than 16 pixels.
 }
 ```
 
-## Sponsor
+## Contributing
 
-If `rater-js` is useful to you or your company, consider [sponsoring its
-continued maintenance and development][sponsor-url].
+Want to contribute? Awesome! The most basic way to show your support is to
+star the project, or to raise issues. You can also support this project by
+[becoming a sponsor on GitHub][sponsor-url] or by making a
+[PayPal donation][donate-url] to ensure this journey continues indefinitely!
+
+Thanks again for your support, it is much appreciated! 🙏
 
 ## Commercial support
 
@@ -295,9 +301,12 @@ npm test
 
 [RaterJS]: https://fredolss.github.io/rater-js/example/ "rater-js demo"
 [sponsor-url]: https://github.com/sponsors/fredolss
+[donate-url]: https://paypal.me/folssondev
 [npm-image]: https://img.shields.io/npm/v/rater-js.svg?style=flat-square
 [npm-url]: https://www.npmjs.com/package/rater-js
 [license-url]: LICENSE
 [license-image]: https://img.shields.io/npm/l/rater-js.svg?style=flat-square
 [downloads-image]: https://img.shields.io/npm/dm/rater-js.svg?style=flat-square
 [downloads-url]: https://www.npmjs.com/package/rater-js
+[sponsor-image]: https://img.shields.io/badge/sponsor-fredolss-EA4AAA.svg?style=flat-square&logo=github-sponsors&logoColor=white
+[donate-image]: https://img.shields.io/badge/donate-PayPal-00457C.svg?style=flat-square&logo=paypal&logoColor=white
