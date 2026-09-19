@@ -1,3 +1,5 @@
-theme: jekyll-theme-cayman
+theme: jekyll-theme-minimal
+logo: /assets/img/rater-js-icon.svg
 title: Rater Js
 description: Rater js is the best star rater for the browser. No dependencies. Unlimited number of stars
+

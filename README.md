@@ -1,98 +1,130 @@
-Rater Js
-========
+![rater-js logo](assets/img/rater-js-banner.svg)
 
-![rater-js Logo](ratings.png)
-[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://paypal.me/folssondev)
-[![NPM version][npm-image]][npm-url]
+
+[![npm version][npm-image]][npm-url]
 [![License][license-image]][license-url]
 [![Downloads][downloads-image]][downloads-url]
 [![Node.js CI](https://github.com/fredolss/rater-js/actions/workflows/node.js.yml/badge.svg?branch=master)](https://github.com/fredolss/rater-js/actions/workflows/node.js.yml)
 
-**rater-js** is a star rating widget for the browser.
+# rater-js
 
-### Main features:
+`rater-js` is a lightweight, dependency-free star rating widget for the browser.
+It supports mouse and touch input, fractional ratings, custom star images, and
+right-to-left layouts.
 
-* Unlimited number of stars.
-* Svg as background image makes it look good in any size.
-* Custom css. Use your own image as star.
-* RTL support.
-* Touch support.
+## Features
 
-[**Try Rater JS  Demo →**][RaterJS]
+- Any number of stars
+- Fractional rating steps
+- Mouse and touch support
+- Right-to-left support
+- Read-only ratings
+- Custom star size, spacing, images, and text
+- CommonJS, AMD, and browser-global usage
+- TypeScript declarations included
+
+[**Try the live demo →**][RaterJS]
 
 ## Installation
 
-```
-npm install rater-js --save
-```
-
-## Development
-
-Development and CI use Node.js 24. With nvm installed, select the configured
-version and run the build and test suite:
-
 ```sh
-nvm use
-npm ci
-npm run build
-npm test
+npm install rater-js
 ```
 
-## Usage
+## Quick start
 
-**rater-js** can be used with amd, commonjs or without any module loader using global scope.
-
-In your html create an element that acts as the placeholder for the widget.
+Add an element that will contain the rating widget:
 
 ```html
 <div id="rater"></div>
 ```
 
-### Global scope
-Directly reference the js from the module
+Create a rater for that element:
+
+```js
+var raterJs = require("rater-js");
+
+var rater = raterJs({
+    element: document.querySelector("#rater"),
+    rateCallback: function(rating, done) {
+        this.setRating(rating);
+        done();
+    }
+});
+```
+
+`rateCallback` receives the selected rating and a `done` callback. Always call
+`done()` after synchronous or asynchronous rating work has finished so the
+widget can leave its busy state. Inside `rateCallback`, `this` refers to the
+rater instance.
+
+## Loading rater-js
+
+### CommonJS
+
+```js
+var raterJs = require("rater-js");
+```
+
+### Browser global
+
+Load the distribution bundle before the closing `body` tag:
 
 ```html
-<!--Add js before end body tag-->
-<script src="node-modules/rater-js/index.js"></script>
+<script src="node_modules/rater-js/index.js"></script>
 ```
 
-The widget will be available globally as "raterJs" on the window object.
+The factory is then available as `window.raterJs`:
 
-### Node/Browserify
-Just require the module.
 ```js
-var rater = require("rater-js");
+var rater = raterJs({
+    element: document.querySelector("#rater")
+});
 ```
 
-Lastly we can use the widget like this:
+### AMD
+
 ```js
- var myRater = rater({element: document.querySelector("#rater"), rateCallback: function rateCallback(rating, done) {
-                //make async call to server however you want
-                //in this example we have a 'service' that rate and returns the average rating
-                myDataService.rate(rate).then(function(avgRating) {
-                    //update the avarage rating with the one we get from the server
-                    myRater.setRating(avgRating);
-                     //we could disable the rater to prevent another rating
-                     //if we dont want the user to be able to change their mind
-                    myRater.disable();
-                    //dont forget to call done
-                    done();
-                }, function(error) {
-                        //handle the error
-                        //dont forget to call done
-                        done();
-                });
-	}});
+define(["rater-js"], function(raterJs) {
+    var rater = raterJs({
+        element: document.querySelector("#rater")
+    });
+});
+```
+
+## Usage
+
+### Initial rating
+
+Set the initial value with the `rating` option:
+
+```js
+var rater = raterJs({
+    element: document.querySelector("#rater"),
+    rating: 3.5
+});
+```
+
+You can also provide the initial value through a `data-rating` attribute:
+
+```html
+<div id="rater" data-rating="3.5"></div>
+```
+
+```js
+var rater = raterJs({
+    element: document.querySelector("#rater")
+});
 ```
 
 ### Multiple raters
 
-`raterJs` creates one independent rater for one element. To turn every element
-matching a selector into a rater, create one instance for each element:
+Each call to `raterJs` creates one independent rater for one element. Create an
+instance for every matching element when a page contains multiple ratings:
 
 ```html
-<div class="rater"></div>
-<div class="rater"></div>
+<div class="rater" data-rating="2"></div>
+<div class="rater" data-rating="4"></div>
 ```
 
 ```js
@@ -110,69 +142,162 @@ var raters = Array.from(document.querySelectorAll(".rater")).map(function(elemen
 The returned array contains the individual instances, so each rater can be
 updated, disabled, cleared, or disposed independently.
 
-### Spacing between stars
+### Fractional ratings
 
-Stars have a 2px gap by default. Use `starSpacing` to customize the gap in
-pixels, or set it to `0` to use the previous layout without additional spacing
-between the star image boxes:
+Use `step` to control the selectable precision. It must be greater than `0` and
+no greater than `1`:
 
 ```js
-var spacedRater = raterJs({
+var rater = raterJs({
+    element: document.querySelector("#rater"),
+    rating: 3.5,
+    step: 0.5
+});
+```
+
+### Spacing between stars
+
+Stars have a 2-pixel gap by default. Set `starSpacing` to a non-negative number,
+or use `0` for the original layout without gaps:
+
+```js
+var rater = raterJs({
     element: document.querySelector("#rater"),
     starSize: 32,
     starSpacing: 6
 });
 ```
 
-Css will be injected at runtime, but you can override the css to get the look you want.
+### Read-only ratings
 
-```css
-//change the whole image used as the star. Make sure to set starSize in options if not 16px.
-//first image is for the 'off' mode
-.star-rating {
-        background: url("myStar_off.svg") !important;
-}
+```js
+var rater = raterJs({
+    element: document.querySelector("#rater"),
+    rating: 4.4,
+    readOnly: true
+});
+```
 
-//add style for 'on' mode
-.star-rating .star-value{
-        background: url("myStar_on.svg") !important;
-}
+### Right-to-left ratings
+
+Set `reverse` to `true` to reverse the rating direction:
+
+```html
+<div dir="rtl">
+    <div id="rater"></div>
+</div>
+```
+
+```js
+var rater = raterJs({
+    element: document.querySelector("#rater"),
+    reverse: true
+});
+```
+
+### Hover callbacks
+
+Use `onHover` and `onLeave` to display the value currently under the pointer:
+
+```html
+<span id="rater"></span>
+<span id="live-rating"></span>
+```
+
+```js
+var rater = raterJs({
+    element: document.querySelector("#rater"),
+    onHover: function(currentRating, selectedRating) {
+        document.querySelector("#live-rating").textContent = currentRating;
+    },
+    onLeave: function(currentRating, selectedRating) {
+        document.querySelector("#live-rating").textContent = selectedRating || "";
+    }
+});
 ```
 
 ## Configuration
 
-| Property      | Description            |
-| ------------- |:----------------------:|
-| element       | HtmlElement. Required.   |
-| rateCallback  | Function. Triggered when star i clicked.               | 
-| max           | Number. Number of stars to show.      |
-| showToolTip   | true/false. If set to true, show tooltip when hover the stars.            |
-| starSize      | Number. Width and height of the star image.      |
-| starSpacing   | Number. Additional space between star image boxes in pixels. Defaults to 2. Use 0 for no additional spacing.      |
-| disableText   | Text to show when disabled.   |
-| ratingText    | Text to show when hover over stars. Text {rating} {maxRating}.   |
-| isBusyText    | Displayed while user is rating but done not called yet.  |
-| readOnly      | true/false. If set to true, will disable the rater.  |
-| step          | Number. Set a precision between 0 and 1 for the rating.  |
-| reverse       | true/false. If set to true, the ratings will be reversed. |
+| Option | Type | Default | Description |
+| --- | --- | --- | --- |
+| `element` | `HTMLElement` | Required | Element that will contain the rater. |
+| `rateCallback` | `function(rating, done)` | — | Called when a rating is selected. Call `done()` when processing has finished. The rater instance is available as `this`. |
+| `max` | `number` | `5` | Number of stars to display. |
+| `rating` | `number` | No rating | Initial rating. A `data-rating` value on `element` is used when this option is not supplied. |
+| `step` | `number` | `1` | Rating precision. Must be greater than `0` and no greater than `1`. |
+| `starSize` | `number` | `16` | Width and height of each star in pixels. |
+| `starSpacing` | `number` | `2` | Non-negative gap between stars in pixels. Use `0` for no gap. |
+| `showToolTip` | `boolean` | `true` | Shows rating text in the element's `title` attribute while hovering. |
+| `ratingText` | `string` | `"{rating}/{maxRating}"` | Hover text. Supports `{rating}` and `{maxRating}` placeholders. |
+| `disableText` | `string` | `"{rating}/{maxRating}"` | Tooltip used while the rater is disabled. Supports `{rating}` and `{maxRating}` placeholders. |
+| `isBusyText` | `string` | — | Tooltip displayed while `rateCallback` is waiting for `done()`. |
+| `readOnly` | `boolean` | `false` | Creates the rater in a disabled state. |
+| `reverse` | `boolean` | `false` | Reverses the rating direction for right-to-left layouts. |
+| `onHover` | `function(currentRating, selectedRating)` | — | Called while the pointer moves over the rater. |
+| `onLeave` | `function(currentRating, selectedRating)` | — | Called when the pointer leaves the rater. |
 
-## Methods/Properties
+## Methods and properties
 
-```js
-disable(): //Disable the widget
-enable(): //Enable the widget
-setRating(rating:number): //Set the rating
-getRating(): //Get the average rating
-dispose(); //Removes event handlers
-clear(); //Clears the rating
-element; //Get the element used by rater js
+| Member | Description |
+| --- | --- |
+| `setRating(rating)` | Sets the current rating. The value must be a number between `0` and `max`. |
+| `getRating()` | Returns the selected rating, or `null` when no rating is set. |
+| `clear()` | Clears the selected rating and resets the visual value. |
+| `disable()` | Prevents user interaction and applies the disabled state. |
+| `enable()` | Restores user interaction. |
+| `dispose()` | Removes the mouse and touch event handlers registered by the instance. |
+| `element` | Returns the element used by the rater instance. |
+
+## Custom styling
+
+The default CSS and SVG stars are injected at runtime. Override the background
+images to use your own stars. Set `starSize` when the images should be displayed
+at a size other than 16 pixels.
+
+```css
+/* Image used for the unselected stars. */
+.star-rating {
+    background-image: url("my-star-off.svg") !important;
+}
+
+/* Image used for the selected stars. */
+.star-rating .star-value {
+    background-image: url("my-star-on.svg") !important;
+}
 ```
 
+## Sponsor
 
-[RaterJs]:https://fredolss.github.io/rater-js/example/  "RaterJs"
+If `rater-js` is useful to you or your company, consider [sponsoring its
+continued maintenance and development][sponsor-url].
+
+## Commercial support
+
+Commercial support is available for custom functionality, integrations,
+accessibility improvements, and priority support. Contact the maintainer at
+[fredrik.olsson2@outlook.com](mailto:fredrik.olsson2@outlook.com).
+
+## Development
+
+Development and CI use Node.js 24. With nvm installed, select the configured
+version and run the build and test suite:
+
+```sh
+nvm use
+npm ci
+npm run build
+npm test
+```
+
+## License
+
+`rater-js` is available under the [MIT License][license-url].
+
+[RaterJS]: https://fredolss.github.io/rater-js/example/ "rater-js demo"
+[sponsor-url]: https://github.com/sponsors/fredolss
 [npm-image]: https://img.shields.io/npm/v/rater-js.svg?style=flat-square
-[npm-url]: https://npmjs.org/package/rater-js
-[license-url]: LICENSE.md
-[license-image]: https://img.shields.io/:license-mit-blue.svg?style=flat-square
-[downloads-image]: http://img.shields.io/npm/dm/rater-js.svg?style=flat-square
-[downloads-url]: https://npmjs.org/package/rater-js
+[npm-url]: https://www.npmjs.com/package/rater-js
+[license-url]: LICENSE
+[license-image]: https://img.shields.io/npm/l/rater-js.svg?style=flat-square
+[downloads-image]: https://img.shields.io/npm/dm/rater-js.svg?style=flat-square
+[downloads-url]: https://www.npmjs.com/package/rater-js
