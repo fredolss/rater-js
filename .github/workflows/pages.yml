@@ -37,6 +37,14 @@ jobs:
           cp -R assets dist example _site/
           printf '%s\n' '<!doctype html><meta http-equiv="refresh" content="0; url=example/">' > _site/index.html
 
+      - name: Verify Pages artifact
+        run: |
+          test -f _site/example/index.html
+          test -f _site/example/index.js
+          test -f _site/example/favicon.ico
+          test -f _site/dist/rater-js.iife.min.js
+          grep -Fq '../dist/rater-js.iife.min.js' _site/example/index.html
+
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v4
         with:
