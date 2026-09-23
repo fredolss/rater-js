@@ -39,8 +39,17 @@ jobs:
           source: ./
           destination: ./_site
 
+      - name: Cache-bust example scripts
+        run: |
+          SHORT_SHA="${GITHUB_SHA:0:7}"
+          sed -i \
+            -e "s#src=\"\.\./dist/rater-js\.iife\.min\.js\"#src=\"../dist/rater-js.iife.min.js?v=${SHORT_SHA}\"#" \
+            -e "s#src=\"index\.js\"#src=\"index.js?v=${SHORT_SHA}\"#" \
+            _site/example/index.html
+
       - name: Verify Pages artifact
         run: |
+          SHORT_SHA="${GITHUB_SHA:0:7}"
           test -f _site/index.html
           grep -Fiq 'rater-js' _site/index.html
           test -f _site/favicon.ico
@@ -49,7 +58,8 @@ jobs:
           test -f _site/example/index.js
           test -f _site/example/favicon.ico
           test -f _site/dist/rater-js.iife.min.js
-          grep -Fq '../dist/rater-js.iife.min.js' _site/example/index.html
+          grep -Fq "../dist/rater-js.iife.min.js?v=${SHORT_SHA}" _site/example/index.html
+          grep -Fq "index.js?v=${SHORT_SHA}" _site/example/index.html
 
       - uses: actions/upload-pages-artifact@v4
         with:
