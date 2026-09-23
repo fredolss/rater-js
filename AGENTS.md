@@ -9,15 +9,16 @@ The widget implementation lives in `lib/rater-js.js`. `lib/index.js` is the pack
 Use Node.js 24 (`nvm use`) and install the lockfile exactly with `npm ci`.
 
 - `npm run build` creates the ESM and minified IIFE distributions with esbuild.
+- `npm run lint` checks the JavaScript sources, scripts, examples, and tests with ESLint.
 - `npm test` rebuilds, runs the Mocha suite, and checks TypeScript declarations.
 - `npm run test:types` runs only the strict, no-emit declaration test.
 - `npm run test:package` verifies the contents and metadata of the npm package.
 
-Run `npm test` and `npm run test:package` before opening a pull request.
+Run `npm run lint`, `npm test`, and `npm run test:package` before opening a pull request.
 
 ## Coding Style & Naming Conventions
 
-This is native ESM: use `import`/`export` and include `.js` in relative imports. Follow the style of the file being changed: the legacy widget source uses tabs, while newer scripts, tests, and type declarations use four spaces. Use semicolons, double quotes in new JavaScript, `camelCase` for variables/functions, and descriptive option names consistent with the public API (for example, `starSpacing`). No formatter or linter is configured, so keep diffs focused and preserve nearby formatting.
+This is native ESM: use `import`/`export` and include `.js` in relative imports. Follow the style of the file being changed: the legacy widget source uses tabs, while newer scripts, tests, and type declarations use four spaces. Use semicolons, double quotes in new JavaScript, `camelCase` for variables/functions, and descriptive option names consistent with the public API (for example, `starSpacing`). ESLint checks the JavaScript files; keep diffs focused and preserve nearby formatting.
 
 ## Testing Guidelines
 

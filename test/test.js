@@ -326,11 +326,11 @@ describe('RaterJs', function() {
         global.document = dom.window.document;
        
         assert.throws(() => {
-            let rater = raterJs({ element:element, step:0 });
+            raterJs({ element:element, step:0 });
         });
 
         assert.throws(() => {
-            let rater = raterJs({ element:element, step:-0.0001 });
+            raterJs({ element:element, step:-0.0001 });
         });
     });
 
@@ -350,11 +350,11 @@ describe('RaterJs', function() {
         global.document = dom.window.document;
 
         assert.doesNotThrow(() => {
-            let rater = raterJs({ element:element, step: 0.01 });
+            raterJs({ element:element, step: 0.01 });
         });
 
         assert.doesNotThrow(() => {
-            let rater = raterJs({ element:element, step:0.999 });
+            raterJs({ element:element, step:0.999 });
         });
     });
 
