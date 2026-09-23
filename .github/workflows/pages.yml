@@ -43,6 +43,8 @@ jobs:
         run: |
           test -f _site/index.html
           grep -Fiq 'rater-js' _site/index.html
+          test -f _site/favicon.ico
+          grep -Fq 'href="/favicon.ico"' _site/index.html
           test -f _site/example/index.html
           test -f _site/example/index.js
           test -f _site/example/favicon.ico
