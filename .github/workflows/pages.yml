@@ -41,6 +41,9 @@ jobs:
 
       - name: Cache-bust example scripts
         run: |
+          # jekyll-build-pages runs as root in a container, so _site is
+          # root-owned; reclaim it so sed -i can write its temp file.
+          sudo chown -R "$(id -u):$(id -g)" _site
           SHORT_SHA="${GITHUB_SHA:0:7}"
           sed -i \
             -e "s#src=\"\.\./dist/rater-js\.iife\.min\.js\"#src=\"../dist/rater-js.iife.min.js?v=${SHORT_SHA}\"#" \
