@@ -23,16 +23,23 @@ nvm use
 npm ci
 ```
 
-Run the test suite:
+Build the native ESM and standalone browser distributions:
+
+```sh
+npm run build
+```
+
+Run the test suite and TypeScript declaration checks. This command also builds
+the distributions first:
 
 ```sh
 npm test
 ```
 
-Build the distributable bundle:
+Verify the files that would be included in the npm package:
 
 ```sh
-npm run build
+npm run test:package
 ```
 
 ## Submitting a pull request
@@ -55,7 +62,8 @@ prefer splitting unrelated changes into separate PRs when possible.
 
 Publishing to npm happens automatically via
 [.github/workflows/release.yml](.github/workflows/release.yml) once the
-Release is published.
+Release is published. The workflow also attaches the native ESM build,
+standalone browser build, and sourcemap to the GitHub Release.
 
 ## Other ways to help
 

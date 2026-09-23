@@ -22,8 +22,8 @@ right-to-left layouts.
 - Right-to-left support
 - Read-only ratings
 - Custom star size, spacing, images, and text
-- ES module imports with modern bundlers
-- CommonJS, AMD, and browser-global usage
+- Native ES modules for modern bundlers
+- Standalone browser build for use without a bundler
 - TypeScript declarations included
 
 [**Try the live demo →**][RaterJS]
@@ -61,12 +61,10 @@ const rater = raterJs({
 widget can leave its busy state. Inside `rateCallback`, `this` refers to the
 rater instance.
 
-## Loading rater-js
+## Using rater-js with a bundler
 
-### ES modules and bundlers (recommended)
-
-Use a default import in modern applications built with tools such as Vite,
-webpack, Parcel, or esbuild:
+`rater-js` is a native ES module. Vite, webpack, Parcel, Rollup, and esbuild can
+consume it directly:
 
 ```js
 import raterJs from "rater-js";
@@ -76,41 +74,23 @@ const rater = raterJs({
 });
 ```
 
-`rater-js` is currently distributed as a CommonJS/UMD package. Modern bundlers
-and Node.js ES modules provide the default-import interoperability used above.
-The package is not a native browser ES module, so a bare import from
-`"rater-js"` requires a bundler or another package-resolution layer.
+## Using rater-js without a bundler
 
-### CommonJS
-
-```js
-const raterJs = require("rater-js");
-```
-
-### Browser global
-
-Load the distribution bundle before the closing `body` tag:
+Load the standalone browser build before the closing `body` tag:
 
 ```html
-<script src="node_modules/rater-js/index.js"></script>
-```
-
-The factory is then available as `window.raterJs`:
-
-```js
-const rater = raterJs({
-    element: document.querySelector("#rater")
-});
-```
-
-### AMD loaders
-
-```js
-define(["rater-js"], function(raterJs) {
-    const rater = raterJs({
+<script src="node_modules/rater-js/dist/rater-js.iife.min.js"></script>
+<script>
+    const rater = window.raterJs({
         element: document.querySelector("#rater")
     });
-});
+</script>
+```
+
+The same file is available from npm CDNs such as jsDelivr:
+
+```html
+<script src="https://cdn.jsdelivr.net/npm/rater-js@2/dist/rater-js.iife.min.js"></script>
 ```
 
 ## Usage
@@ -307,9 +287,28 @@ version and run the build and test suite:
 ```sh
 nvm use
 npm ci
-npm run build
 npm test
+npm run test:package
 ```
+
+## Migrating from 1.x
+
+Version 2.0 is ESM-only. Replace CommonJS `require` calls with a default import:
+
+```diff
+- const raterJs = require("rater-js");
++ import raterJs from "rater-js";
+```
+
+CommonJS and AMD loaders are no longer supported. For direct browser usage,
+replace the old root bundle with the standalone browser build:
+
+```diff
+- <script src="node_modules/rater-js/index.js"></script>
++ <script src="node_modules/rater-js/dist/rater-js.iife.min.js"></script>
+```
+
+The browser global remains `window.raterJs`.
 
 ### Releasing
 
@@ -317,7 +316,7 @@ npm test
 2. `git push && git push --tags`
 3. Create a GitHub Release from the new tag (GitHub UI, or `gh release create vX.Y.Z --generate-notes`)
 
-Publishing to npm happens automatically via [.github/workflows/release.yml](.github/workflows/release.yml) once the Release is published.
+Publishing to npm happens automatically via [.github/workflows/release.yml](.github/workflows/release.yml) once the Release is published. The workflow also attaches the ESM build, standalone browser build, and sourcemap to the GitHub Release.
 
 ## License
 

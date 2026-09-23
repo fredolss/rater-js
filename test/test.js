@@ -1,8 +1,9 @@
-var assert = require('assert');
-var raterJs = require('../lib/rater-js');
-var sinon = require('sinon');
-var jsdom = require('jsdom');
-const { JSDOM } = jsdom;
+import assert from "node:assert";
+
+import { JSDOM } from "jsdom";
+import sinon from "sinon";
+
+import raterJs from "../lib/rater-js.js";
 
 describe('RaterJs', function() {
       
@@ -85,7 +86,7 @@ describe('RaterJs', function() {
             done();
         });
         let rater = raterJs({ element:element, rating:3, rateCallback:callbackSpy });
-        var evt = global.document.createEvent("HTMLEvents");
+        const evt = global.document.createEvent("HTMLEvents");
         evt.initEvent("click", false, true);
         element.dispatchEvent(evt);
         sinon.assert.calledOnce(callbackSpy);

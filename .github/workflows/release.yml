@@ -5,7 +5,7 @@ on:
     types: [published]
 
 permissions:
-  contents: read
+  contents: write
   id-token: write
 
 jobs:
@@ -21,8 +21,8 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
 
       - run: npm ci
-      - run: npm run build
       - run: npm test
+      - run: npm run test:package
 
       - name: Verify package.json version matches release tag
         run: |
@@ -36,6 +36,16 @@ jobs:
       # Trusted Publishing (OIDC) requires npm CLI 11.5.1+; Node 24's bundled
       # npm may be older, so upgrade explicitly before publishing.
       - run: npm install -g npm@latest
+
+      - name: Attach distributable files to the GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release upload "$GITHUB_REF_NAME" \
+            dist/rater-js.esm.js \
+            dist/rater-js.iife.min.js \
+            dist/rater-js.iife.min.js.map \
+            --clobber
 
       - name: Publish to npm
         run: npm publish --provenance

@@ -1,26 +1,35 @@
 {
   "name": "rater-js",
   "description": "Star rating widget for the browser.",
-  "version": "1.0.3",
+  "version": "2.0.0",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/fredolss/rater-js.git"
   },
   "bugs": "https://github.com/fredolss/rater-js/issues",
   "homepage": "https://fredolss.github.io/rater-js",
-  "types": "index.d.ts",
-  "main": "index.js",
+  "type": "module",
+  "types": "./index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./index.d.ts",
+      "import": "./dist/rater-js.esm.js",
+      "default": "./dist/rater-js.esm.js"
+    }
+  },
+  "sideEffects": true,
+  "unpkg": "./dist/rater-js.iife.min.js",
+  "jsdelivr": "./dist/rater-js.iife.min.js",
   "files": [
-    "index.js",
+    "dist",
     "index.d.ts"
   ],
-  "engines": {
-    "node": ">=22.22.2"
-  },
   "scripts": {
     "build": "node scripts/build.mjs",
-    "test": "mocha --require ignore-styles",
-    "prepublishOnly": "npm run build && npm test"
+    "test": "npm run build && mocha && npm run test:types",
+    "test:package": "node scripts/check-package.mjs",
+    "test:types": "tsc --project test/types/tsconfig.json",
+    "prepublishOnly": "npm test"
   },
   "keywords": [
     "star",
@@ -40,12 +49,10 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "@babel/core": "^8.0.1",
-    "@babel/preset-env": "^8.0.2",
     "esbuild": "^0.28.2",
-    "ignore-styles": "^5.0.1",
     "jsdom": "^30.0.1",
     "mocha": "^12.0.0",
-    "sinon": "^22.1.0"
+    "sinon": "^22.1.0",
+    "typescript": "^5.9.3"
   }
 }

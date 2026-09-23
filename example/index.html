@@ -8,7 +8,7 @@
 <body>
  
 <h1>Rater Js Example</h1> 
-<a href="https://fredolss.github.io/rater-js/">Back to home page</a>
+<a href="https://github.com/fredolss/rater-js">View the project on GitHub</a>
 <h2>Basic 5 star rater</h2>
 
 <div id="rater"></div>
@@ -18,7 +18,7 @@
     {
         starSize:32,
         element:document.querySelector("#rater"),
-        rateCallback:function rateCallback(rating, done) {
+        rateCallback(rating, done) {
             this.setRating(rating); 
             done(); 
         }
@@ -35,15 +35,15 @@
 
 <pre>
     <code>
-    var multipleRaters = Array.from(document.querySelectorAll(".multiple-rater")).map(function(element) {
-        return raterJs({
-            element:element,
-            rateCallback:function rateCallback(rating, done) {
+    const multipleRaters = [...document.querySelectorAll(".multiple-rater")].map((element) =>
+        window.raterJs({
+            element,
+            rateCallback(rating, done) {
                 this.setRating(rating);
                 done();
             }
-        });
-    });
+        })
+    );
     </code>
 </pre>
 
@@ -74,7 +74,7 @@
     <code>
     {
         element:document.querySelector("#rater"),
-        rateCallback:function rateCallback(rating, done) {
+        rateCallback(rating, done) {
             this.setRating(rating); 
             done(); 
         },
@@ -100,7 +100,7 @@
         disableText:"Custom disable text!", 
         ratingText:"My custom rating text {rating}",
         showToolTip:true,
-        rateCallback:function rateCallback(rating, done) {
+        rateCallback(rating, done) {
             starRating.setRating(rating); 
             starRating.disable(); 
             done(); 
@@ -138,9 +138,9 @@
     { 
         isBusyText: "Rating in progress. Please wait...",
         element:document.querySelector("#rater4"),
-        rateCallback: function rateCallback(rating, done) {
+        rateCallback(rating, done) {
         starRating.setRating(rating); 
-            myDataService.rate().then(function (avgRating) {
+            myDataService.rate().then((avgRating) => {
                 starRating.setRating(avgRating); 
                 done(); 
             });
@@ -162,14 +162,14 @@
     <code>
     {
         element:document.querySelector("#rater5"),
-        rateCallback:function rateCallback(rating, done) {
+        rateCallback(rating, done) {
             this.setRating(rating); 
             done(); 
         },
-        onHover: function(currentIndex, currentRating){
+        onHover: (currentIndex) => {
 			document.querySelector('.live-rating').textContent = currentIndex;
         },
-        onLeave: function(currentIndex, currentRating){
+        onLeave: (_currentIndex, currentRating) => {
             document.querySelector('.live-rating').textContent = currentRating;
         }
     }
@@ -190,13 +190,13 @@
     <code>
     {
         element:document.querySelector("#rater6"),
-        rateCallback:function rateCallback(rating, done) {
+        rateCallback(rating, done) {
             this.setRating(rating); 
             done(); 
         }
     }
 
-    document.querySelector('#rater6-button').addEventListener("click", function() {
+    document.querySelector('#rater6-button').addEventListener("click", () => {
         starRating6.clear();
     }, false); 
 
@@ -211,7 +211,7 @@
             max:6, 
             reverse:true, //this enable rtl
             element:document.querySelector("#rater7"),
-            rateCallback:function rateCallback(rating, done) {
+            rateCallback(rating, done) {
                 this.setRating(rating); 
                 done(); 
             }
@@ -223,10 +223,7 @@
     <span id="rater7"></span>
 </div>
 
-<script>
-    var raterJsCacheBust = Date.now();
-    document.write('<script src="../index.js?v=' + raterJsCacheBust + '"><\/script>');
-    document.write('<script src="index.js?v=' + raterJsCacheBust + '"><\/script>');
-</script>
+<script src="../dist/rater-js.iife.min.js"></script>
+<script src="index.js"></script>
 </body>
 </html>
